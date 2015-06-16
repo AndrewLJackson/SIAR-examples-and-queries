@@ -49,7 +49,7 @@ model1 <- siarsolomcmcv4(consumers, sources)
 # this line plots the raw isotope data for sources and consumers as a bi-plot.
 # The trophic enrichment factors have been applied to the sources.
 # You will be asked to position a legend on the screen by left clicking.
-dev.new()
+#dev.new()
 siarplotdata(model1,iso=c(1,2))
 
 # This line plots the estimated proportional contribution of each source in the 
@@ -58,8 +58,8 @@ siarplotdata(model1,iso=c(1,2))
 # There are 8 in this example)
 # You will then be asked whether you want the histograms plotted all together
 # on one graph, or a seperate graph for each source. Suggest you go for group 3.
-dev.new()
-siarhistograms(model1)
+#dev.new()
+#siarhistograms(model1)
 
 # This function plots the histogram data from the previous example as box-style
 # plots showing the highest density regions of the estimated posterior
@@ -79,8 +79,8 @@ siarhistograms(model1)
 #
 # Same data as in the histograms generated above, but now displayed as
 # density boxplots.
-dev.new()
-siarproportionbygroupplot(model1,grp=1)
+#dev.new()
+siardensityplot(model1$output[, 1:4], xticklabels=c('A','B','C','D'))
 
 # This gets the 95% credible intervals, modes and means of the estimates
 # It returns values for all estimated parameters... ie. the proportion of each
@@ -102,7 +102,7 @@ siarhdrs(model1)
 # If A goes up, C has to go up too to compensate. Bascially, the most likely
 # scenario is 25% of each of the 4 sources, but in reality, the model cant
 # separate the source contributions.
-dev.new()
+#dev.new()
 siarmatrixplot(model1)
 
 
@@ -125,15 +125,16 @@ combined.sources <- data.frame(sources=c("A","B","CD"),
 
 model2 <- siarsolomcmcv4(consumers, combined.sources)
 
-dev.new()
+#dev.new()
 siarplotdata(model2,iso=c(1,2))
 
 
-dev.new()
-siarhistograms(model2)
+#dev.new()
+#siarhistograms(model2)
 
-dev.new()
-siarproportionbygroupplot(model2,grp=1)
+#dev.new()
+siardensityplot(model2$output[ , 1:3],
+                xticklabels=c('A','B','C+D'))
 
 
 siarhdrs(model2)
@@ -144,7 +145,7 @@ siarhdrs(model2)
 # You would now incorrectly assume that  CD represents pretty much a guaranteed
 # 43% of the diet, whereas the appropriate analysis we did earlier tells us
 # that 
-dev.new()
+#dev.new()
 siarmatrixplot(model2)
 
 # ------------------------------------------------------------------------------
@@ -158,9 +159,14 @@ CD.posteriori.aggregated <-  cbind(model1$output[,c("A","B")],
 # this figure illustrates how uncertain we are in the estiamtes, and 
 # it differs starkly with the relatively much more certain results stemming 
 # from the a priori aggregation.
-dev.new()
-siardensityplot(CD.posteriori.aggregated)
+#dev.new()
+siardensityplot(CD.posteriori.aggregated,
+                xticklabels=c('A','B','C+D'))
 pairs(CD.posteriori.aggregated,
        diag.panel = panelhist,
        lower.panel = panelcor,
        upper.panel = panelcontour)
+
+
+
+
