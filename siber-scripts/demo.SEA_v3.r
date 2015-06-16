@@ -10,7 +10,7 @@ library(siar)
 # change this line
 #setwd("c:/rtemp")
 #setwd("/Users/andrewjackson/Dropbox/siar/demo scripts and files/siber scripts")
-setwd( "D:/Alternative My Documents/Andrews Documents/Dropbox/siar/demo scripts and files/siber scripts")
+#setwd( "D:/Alternative My Documents/Andrews Documents/Dropbox/siar/demo scripts and files/siber scripts")
 # ------------------------------------------------------------------------------
 
 
