@@ -10,10 +10,8 @@ graphics.off()
 
 # make sure you set the current directory to the folder in which you put these
 # downloaded files.
-# setwd("D:/Alternative My Documents/Andrews Documents/Work/SIAR/R files/SIAR demo")
 # setwd("C:/SIARdemo")    # for example.
-# setwd("")
-setwd("D:/Alternative My Documents/Andrews Documents/Dropbox/siar/demo scripts and files/siar scripts")
+
 
 # read in you source data
 sources <- read.table("sourcesdemo.txt",header=TRUE)
@@ -36,8 +34,8 @@ corrections <- read.table("correctionsdemo.txt",header=TRUE)
 # corrections <- 0
 
 # read in the elemental concentration data
-# see Phillips DL, Koch PL (2002) Incorporating concentration dependence in stable
-# isotope mixing models. Oecologia 130: 114?125. for more details.
+# see Phillips DL, Koch PL (2002) Incorporating concentration dependence in 
+# stable isotope mixing models. Oecologia 130: 114?125. for more details.
 concs <- 0 # use this line if you dont want to run with concentration dependence
 #concs <- read.table("concdepdemo.txt", header=TRUE)
 
@@ -83,9 +81,9 @@ siarproportionbygroupplot(model1,grp=1)
 # source in the diet for each group of consumers.
 # In this example, ZosteraG1 is the proportion of Zostera aglae in the diet of 
 # the consumer geese in the Group 1.
-# SD1G1 is the residual error associated with Isotope 1 for consumers in Group 1.
-# This value tells you how variable the consumers are within a group, after
-# fitting the model.
+# SD1G1 is the residual error associated with Isotope 1 for consumers in 
+# Group 1. This value tells you how variable the consumers are within a group,
+# after fitting the model.
 siarhdrs(model1)
 
 # This line creates some potentially very useful diagnostic plots. It will ask
@@ -101,9 +99,9 @@ siarhdrs(model1)
 # between  U.lactuca and Enteromorpha backs this assertion up... the model can
 # be solved with either U.lactuca or Enteromorpha and as it
 # increases the contribution of one of them it reduces the contribution of
-# the other. The upper triangle of the matrix diplays the correlation graphically
-# while the lower triangle gives the correlation coefficient with larger values
-# getting larger text size.
+# the other. The upper triangle of the matrix diplays the correlation 
+# graphically while the lower triangle gives the correlation coefficient with 
+# larger values getting larger text size.
 siarmatrixplot(model1)
 
 # If you want to access the raw data output from the model you can get it...

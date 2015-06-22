@@ -42,7 +42,7 @@ sample.hull <- convexhull(means.x,means.y)
 
 M <- max(Group)
 
-dev.new()
+#dev.new()
 par(mfrow=c(1,1))
 plot(Iso1,Iso2,col=Group,xlab="Isotope 1", ylab="Isotope 2",
   pch=1,asp=1,xlim=c(min(Iso1)-2,max(Iso1)+2),ylim=c(min(Iso2)-2,max(Iso2)+2))
@@ -54,7 +54,7 @@ legend("topright",
 # in this example, I plot TA as a histogram seperately to the other
 # metrics as it is usually on a scale so vastly different from the other 
 # metrics.
-dev.new()
+#dev.new()
 par(mfrow=c(1,2))
 hist(metrics[,"TA"],freq=F,xlab="TA",ylab="Density",main="")
 siardensityplot(metrics[,c(1,2,4,5,6)],

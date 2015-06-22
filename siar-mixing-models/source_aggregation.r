@@ -80,7 +80,8 @@ siarplotdata(model1,iso=c(1,2))
 # Same data as in the histograms generated above, but now displayed as
 # density boxplots.
 #dev.new()
-siardensityplot(model1$output[, 1:4], xticklabels=c('A','B','C','D'))
+siardensityplot(model1$output[, 1:4], xticklabels=c('A','B','C','D'),
+                main = "All 4 sources")
 
 # This gets the 95% credible intervals, modes and means of the estimates
 # It returns values for all estimated parameters... ie. the proportion of each
@@ -134,7 +135,8 @@ siarplotdata(model2,iso=c(1,2))
 
 #dev.new()
 siardensityplot(model2$output[ , 1:3],
-                xticklabels=c('A','B','C+D'))
+                xticklabels=c('A','B','C+D'),
+                main = "Sources C and D combined a priori")
 
 
 siarhdrs(model2)
@@ -161,7 +163,8 @@ CD.posteriori.aggregated <-  cbind(model1$output[,c("A","B")],
 # from the a priori aggregation.
 #dev.new()
 siardensityplot(CD.posteriori.aggregated,
-                xticklabels=c('A','B','C+D'))
+                xticklabels=c('A','B','C+D'),
+                main = "Sources C and D combined a posteriori")
 pairs(CD.posteriori.aggregated,
        diag.panel = panelhist,
        lower.panel = panelcor,
