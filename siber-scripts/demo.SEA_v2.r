@@ -103,7 +103,6 @@ SEA.B <- siber.ellipses(x,y,group,R=reps)
 
 # Plot the credible intervals for the estimated ellipse areas now
 # stored in the matrix SEA.B
-dev.new()
 siardensityplot(SEA.B,
   xlab="Group",ylab="Area (permil^2)",
   main="Different estimates of Standard Ellipse Area (SEA)")

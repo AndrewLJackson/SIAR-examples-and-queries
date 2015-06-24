@@ -24,7 +24,7 @@ consumers <- read.table("geese2demo.txt",header=TRUE)
                                            
 # alternative dataset comprising only a single group of consumers
 # comment out the line above and replace with this if you want.
-#consumers <- read.table("geese1demo.txt",header=TRUE)
+# consumers <- read.table("geese1demo.txt",header=TRUE)
 
 # read in your corrections data
 corrections <- read.table("correctionsdemo.txt",header=TRUE)

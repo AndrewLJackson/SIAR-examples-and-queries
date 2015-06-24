@@ -13,3 +13,7 @@
 
 # directories
 /plots
+
+# other files
+*.html
+
