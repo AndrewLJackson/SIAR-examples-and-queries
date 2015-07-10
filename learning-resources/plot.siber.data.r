@@ -27,8 +27,8 @@ sample.hull <- convexhull(means.x,means.y)
 #dev.new()
 #par(mfrow=c(1,1))
 plot(Iso1,Iso2,col=Group,
-     xlab=expression({delta}^13*C~'\50\211\51'),
-     ylab=expression({delta}^15*N~'\50\211\51'),
+     xlab=expression({delta}^13*C~'\u2030'),
+     ylab=expression({delta}^15*N~'\u2030'),
      pch=1,
      xlim=c(-10, 15),
      ylim=c(-5, 15),
