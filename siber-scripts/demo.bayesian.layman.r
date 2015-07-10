@@ -15,7 +15,7 @@ library(siar)
 
 
 # read in some data
-mydata <- read.table("example_layman_data.txt", header=T,sep="\t")
+mydata <- read.csv("example_layman_data.csv", header=T)
 attach(mydata) # make the names of the columns available for direct calling
 
 # calculate the Bayesian Layman metrics given data for Isotopes 1 and 2, 

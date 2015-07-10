@@ -10,7 +10,7 @@ library(siar)
 # change this line
 #setwd("c:/rtemp")
 #setwd("/Users/andrewjackson/Dropbox/siar/demo scripts and files/siber scripts")
-setwd( "D:/Alternative My Documents/Andrews Documents/Dropbox/siar/demo scripts and files/siber scripts")
+#setwd( "D:/Alternative My Documents/Andrews Documents/Dropbox/siar/demo scripts and files/siber scripts")
 # ------------------------------------------------------------------------------
 
 
@@ -21,7 +21,7 @@ graphics.off()
 
 # read in some data
 # NB the column names have to be exactly, "group", "x", "y"
-mydata <- read.table("example_ellipse_data.txt",sep="\t",header=T)
+mydata <- read.csv("example_ellipse_data.csv",header=T)
 
 # make the column names availble for direct calling
 attach(mydata)
@@ -45,6 +45,17 @@ dev.new()
 plot(x,y,col=group,type="p")
 legend("topright",legend=as.character(paste("Group ",unique(group))),
         pch=19,col=1:length(unique(group)))
+
+# a dataframe for collecting the 6 layman metrics, although see
+# my note below for caveats.
+group.layman.metrics <- data.frame(group = unique(group),
+                                  dN_range = double(ngroups),
+                                  dC_range = double(ngroups),
+                                  TA = double(ngroups),
+                                  CD = double(ngroups),
+                                  MNND = double(ngroups),
+                                  SDNND = double(ngroups)
+                                  )
 
 for (j in unique(group)){
 
@@ -74,6 +85,20 @@ for (j in unique(group)){
   # Plot the convex hull
   lines(CH$xcoords,CH$ycoords,lwd=1,lty=3)
 
+  # you can if you want also calculate the 6 layman metrics
+  # for this group, although I do not recommned making quantiative
+  # comparisons owing to the sample size bias and uncertainties
+  # illustrated in my SIBER paper. This is after all why we are 
+  # fitting ellipses to our data in this script!
+  
+  tmp <- laymanmetrics(spx[[j]],spy[[j]])
+  
+  group.layman.metrics[j,2:7] <- c(tmp$dN_range,
+                                   tmp$dC_range,
+                                   tmp$hull$TA,
+                                   tmp$CD,
+                                   tmp$MNND,
+                                   tmp$SDNND)
   
 }
 
@@ -103,6 +128,7 @@ SEA.B <- siber.ellipses(x,y,group,R=reps)
 
 # Plot the credible intervals for the estimated ellipse areas now
 # stored in the matrix SEA.B
+#dev.new()
 siardensityplot(SEA.B,
   xlab="Group",ylab="Area (permil^2)",
   main="Different estimates of Standard Ellipse Area (SEA)")

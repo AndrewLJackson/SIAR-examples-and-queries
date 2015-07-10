@@ -5,7 +5,9 @@ date: "July 10, 2015"
 output: html_document
 ---
 
-SIBER is blah blah blah...
+SIBER is subset of functions within the SIAR package and allow for analysis of analysis of data in isotope-space as opposed to diet-space such as in the mixing model side of siar. The SIBER functions and routines are currently obtainable within the R package siar, although work is underway to move them to their own standalone, but compatible package.
+
+SIBER provides methods for comparing variation in isotope-space, which is commonly used as a proxy for niche width (both dietary and environmental) of the organisms. From the outset, it is important that you decide whether you want to compare among populations of individuals, or among communities comprising multiple populations.
 
 ```{r}
 summary(cars)
