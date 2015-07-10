@@ -1,0 +1,20 @@
+---
+title: "Introduction to SIBER"
+author: "Andrew L Jackson"
+date: "July 10, 2015"
+output: html_document
+---
+
+SIBER is blah blah blah...
+
+```{r}
+summary(cars)
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
