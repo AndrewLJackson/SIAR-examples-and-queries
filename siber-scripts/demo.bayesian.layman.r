@@ -15,7 +15,7 @@ library(siar)
 
 
 # read in some data
-mydata <- read.csv("example_layman_data.csv", header=T)
+mydata <- read.csv("example_layman_data_2.csv", header=T)
 attach(mydata) # make the names of the columns available for direct calling
 
 # calculate the Bayesian Layman metrics given data for Isotopes 1 and 2, 
@@ -44,12 +44,15 @@ M <- max(Group)
 
 #dev.new()
 par(mfrow=c(1,1))
-plot(Iso1,Iso2,col=Group,xlab="Isotope 1", ylab="Isotope 2",
+plot(Iso1,Iso2,col=Group,
+     xlab="Isotope 1",
+     ylab="Isotope 2",
   pch=1,asp=1,xlim=c(min(Iso1)-2,max(Iso1)+2),ylim=c(min(Iso2)-2,max(Iso2)+2))
 lines(sample.hull$xcoords,sample.hull$ycoords,lty=1,col=1,lwd=2)
-legend("topright",
-  legend=as.character(c(paste("Group ",1:M),"sample hull", "population hull")),
-  pch=c(rep(1,M),NA, NA),col=c(1:M,1,1), lty=c(rep(NA,),1,3))
+legend("topleft",
+  legend=as.character(c(paste("Group ",1:M),"sample hull")),
+  pch=c(rep(1,M),NA),col=c(1:M,1,1), lty=c(rep(NA,M),1),
+  bty="n")
 
 # in this example, I plot TA as a histogram seperately to the other
 # metrics as it is usually on a scale so vastly different from the other 
