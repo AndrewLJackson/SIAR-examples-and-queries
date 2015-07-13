@@ -32,7 +32,8 @@ plot(Iso1,Iso2,col=Group,
      pch=1,
      xlim=c(-10, 15),
      ylim=c(-5, 15),
-     main = tt)
+     main = tt,
+     asp=1)
 lines(sample.hull$xcoords,sample.hull$ycoords,lty=1,col=1,lwd=2)
 #legend("topleft",
 #  legend=as.character(c(paste("Group ",1:M),"sample hull")),

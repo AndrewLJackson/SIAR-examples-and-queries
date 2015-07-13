@@ -13,7 +13,7 @@ One of the difficulties is that when they were first introduced, the same convex
 
 Consider the following two figures:
 
-```{r, echo=FALSE, message = FALSE}
+```{r, echo=FALSE, message = FALSE, fig.width = 10, fig.height = 4}
 
 library(siar, quietly = TRUE,
         verbose = FALSE,
