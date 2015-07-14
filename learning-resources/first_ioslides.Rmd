@@ -1,0 +1,15 @@
+---
+title: 'Monday XXXX--XXXX: something'
+author: "Andrew Jackson"
+date: "21st July 2015"
+output:
+  ioslides_presentation:
+    logo: tcd_logo_here
+    transition: slower
+---
+
+## Learning outcomes
+
+- Know the difference between Frequentist and Bayesian statistics
+- Understand the terms posterior, likelihood and prior. Be able to suggest suitable probability distributions for these terms
+- Be able to interpret the posterior distribution through plots, summaries, and credible intervals
