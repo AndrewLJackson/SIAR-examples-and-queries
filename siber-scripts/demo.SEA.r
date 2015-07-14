@@ -1,8 +1,6 @@
-# this demo generates some random data for M consumers based on N samples and
-# constructs a standard ellipse for each based on SEAc and SEA_B
+rm(list = ls()) # clear the memory of objects
 
-rm(list = ls())
-
+# load the siar package of functions
 library(siar)
 
 # ------------------------------------------------------------------------------
@@ -24,17 +22,20 @@ graphics.off()
 mydata <- read.csv("example_ellipse_data.csv",header=T)
 
 # make the column names availble for direct calling
-attach(mydata)
+# attach(mydata)
+# NB I am phasing out use of the attach() function, and instead
+# prefer to directly reference columns within data.frame objects
+# by using, mydata$x, mydata$y and mydata$group etc...
 
 
 # now loop through the data and calculate the ellipses
-ngroups <- length(unique(group))
+ngroups <- length(unique(mydata$group))
 
 
 
 # split the isotope data based on group
-spx <- split(x,group)
-spy <- split(y,group)
+spx <- split(mydata$x, mydata$group)
+spy <- split(mydata$y, mydata$group)
 
 # create some empty vectors for recording our metrics
 SEA <- numeric(ngroups)
@@ -42,13 +43,15 @@ SEAc <- numeric(ngroups)
 TA <- numeric(ngroups)
 
 dev.new()
-plot(x,y,col=group,type="p")
-legend("topright",legend=as.character(paste("Group ",unique(group))),
-        pch=19,col=1:length(unique(group)))
+plot(mydata$x, mydata$y, col=mydata$group, type="p")
+legend("topright",
+       legend = as.character(paste("Group ",unique(mydata$group))),
+       pch = 19,
+       col = 1:length(unique(mydata$group)))
 
 # a dataframe for collecting the 6 layman metrics, although see
 # my note below for caveats.
-group.layman.metrics <- data.frame(group = unique(group),
+group.layman.metrics <- data.frame(group = unique(mydata$group),
                                   dN_range = double(ngroups),
                                   dC_range = double(ngroups),
                                   TA = double(ngroups),
@@ -57,7 +60,7 @@ group.layman.metrics <- data.frame(group = unique(group),
                                   SDNND = double(ngroups)
                                   )
 
-for (j in unique(group)){
+for (j in unique(mydata$group)){
 
 
   # Fit a standard ellipse to the data
@@ -119,7 +122,7 @@ reps <- 10^4 # the number of posterior draws to make
 
 # Generate the Bayesian estimates for the SEA for each group using the 
 # utility function siber.ellipses
-SEA.B <- siber.ellipses(x,y,group,R=reps)
+SEA.B <- siber.ellipses(mydata$x, mydata$y, mydata$group, R = reps)
 
 # ------------------------------------------------------------------------------
 # Plot out some of the data and results
@@ -134,8 +137,9 @@ siardensityplot(SEA.B,
   main="Different estimates of Standard Ellipse Area (SEA)")
 
 # and now overlay the other metrics on teh same plot for comparison
-points(1:ngroups,SEAc,pch=15,col="red")
-legend("topright",c("SEAc"),pch=c(15,17),col=c("red","blue"))
+points(1:ngroups, SEAc, pch = 15, col = "red")
+legend("topright", c("SEAc"),
+       pch = c(15, 17), col = c("red", "blue"))
 
 # ------------------------------------------------------------------------------
 # Compare two ellipses for significant differences in SEA

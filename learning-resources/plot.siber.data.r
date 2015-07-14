@@ -1,4 +1,4 @@
-plot.siber.data <- function (fname, tt) {
+plot.siber.data <- function (fname, tt, add.hull = T, ...) {
 
 require(siar)
   
@@ -30,11 +30,14 @@ plot(Iso1,Iso2,col=Group,
      xlab=expression({delta}^13*C~'\u2030'),
      ylab=expression({delta}^15*N~'\u2030'),
      pch=1,
-     xlim=c(-10, 15),
-     ylim=c(-5, 15),
      main = tt,
-     asp=1)
-lines(sample.hull$xcoords,sample.hull$ycoords,lty=1,col=1,lwd=2)
+     asp = 1, 
+     bty = "L",
+     ...)
+
+if (add.hull)
+{lines(sample.hull$xcoords,sample.hull$ycoords,lty=1,col=1,lwd=2)}
+
 #legend("topleft",
 #  legend=as.character(c(paste("Group ",1:M),"sample hull")),
 #  pch=c(rep(1,M),NA),col=c(1:M,1,1), lty=c(rep(NA,M),1),

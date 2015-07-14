@@ -7,7 +7,7 @@ output: html_document
 
 SIBER is subset of functions within the SIAR package and allow for analysis of analysis of data in isotope-space as opposed to diet-space such as in the mixing model side of siar. The SIBER functions and routines are currently obtainable within the R package siar, although work is underway to move them to their own standalone, but compatible package.
 
-SIBER provides methods for comparing variation in isotope-space, which is commonly used as a proxy for niche width (both dietary and environmental) of the organisms. From the outset, it is important that you decide whether you want to compare among populations of individuals, or among communities comprising multiple populations.This distinction is discussed in a [video podcast](http://www.tcd.ie/Zoology/research/research/theoretical/Rpodcastsfiles/siber/siber_intro.mp4).
+SIBER provides methods for comparing variation in isotope-space (d-space), which is commonly used as a proxy for niche width (both dietary and environmental) of the organisms. From the outset, it is important that you decide whether you want to compare among populations of individuals, or among communities comprising multiple populations.This distinction is discussed in a [video podcast](http://www.tcd.ie/Zoology/research/research/theoretical/Rpodcastsfiles/siber/siber_intro.mp4).
 
 One of the difficulties is that when they were first introduced, the same convex hull based method was used for both types of comparisons ([Layman et al 2007](https://scholar.google.com/citations?view_op=view_citation&hl=en&user=6yV_oeoAAAAJ&citation_for_view=6yV_oeoAAAAJ:u-x6o8ySG0sC) and [Layman et al 2007](https://scholar.google.com/citations?view_op=view_citation&hl=en&user=6yV_oeoAAAAJ&citation_for_view=6yV_oeoAAAAJ:9yKSN-GCB0IC)). However, the paper introducing [SIBER ](https://scholar.google.com/citations?view_op=view_citation&hl=en&user=E0sB7fUAAAAJ&citation_for_view=E0sB7fUAAAAJ:_FxGoFyzp5QC) showed clearly that ellipse-based approaches for describing isotopic niche widths of single popluations of individuals is far more statistically robust than the hull-based methods; and further introduced Bayesian methods for putting statistical error around the previously point-estimate hull-based metrics and thereby allowing quantiative comparisons to made between them.
 
@@ -25,9 +25,13 @@ par(mfrow=c(1,3))
 source("plot.siber.data.r")
 
 M <- plot.siber.data("../siber-scripts/example_layman_data.csv",
-                tt = "Community 1")
+                tt = "Community 1", 
+                xlim=c(-10, 15), 
+                ylim=c(-5, 15))
 M <- plot.siber.data("../siber-scripts/example_layman_data_2.csv",
-                tt = "Community 2")
+                tt = "Community 2",
+                xlim=c(-10, 15), 
+                ylim=c(-5, 15))
 
 
 # create a blank plot to house the legend
