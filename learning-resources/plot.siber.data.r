@@ -6,7 +6,7 @@ require(siar)
 
 mydata <- read.csv(fname, header=T)
 
-M <- max(mydata$Group)
+M <- max(mydata$group)
 
 with(mydata, {
 
@@ -18,15 +18,15 @@ with(mydata, {
 
 # Now lets calculate the convex hull as per the current method based
 # simply on the means for each group
-means.x <- aggregate(Iso1,list(Group),mean)$x
-means.y <- aggregate(Iso2,list(Group),mean)$x
+means.x <- aggregate(x,list(group),mean)$x
+means.y <- aggregate(y,list(group),mean)$x
 sample.hull <- convexhull(means.x,means.y)
 
 
 
 #dev.new()
 #par(mfrow=c(1,1))
-plot(Iso1,Iso2,col=Group,
+plot(x,y,col=group,
      xlab=expression({delta}^13*C~'\u2030'),
      ylab=expression({delta}^15*N~'\u2030'),
      pch=1,
@@ -39,7 +39,7 @@ if (add.hull)
 {lines(sample.hull$xcoords,sample.hull$ycoords,lty=1,col=1,lwd=2)}
 
 #legend("topleft",
-#  legend=as.character(c(paste("Group ",1:M),"sample hull")),
+#  legend=as.character(c(paste("group ",1:M),"sample hull")),
 #  pch=c(rep(1,M),NA),col=c(1:M,1,1), lty=c(rep(NA,M),1),
 #  bty="n")
 

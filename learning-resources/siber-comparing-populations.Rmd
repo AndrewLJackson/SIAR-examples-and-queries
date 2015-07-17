@@ -31,7 +31,7 @@ mydata<-read.csv("path/example_ellipse_data.csv"))
 
 And now the full code...
 
-```{r, fig.width = 6, fig.height = 4}
+```{r, fig.width = 6, fig.height = 6}
 
 rm(list = ls()) # clear the memory of objects
 
@@ -49,12 +49,12 @@ library(siar)
 
 
 # now close all currently open windows
-graphics.off()
+# graphics.off()
 
 
 # read in some data
 # NB the column names have to be exactly, "group", "x", "y"
-mydata <- read.csv("../siber-scripts/example_ellipse_data.csv",header=T)
+mydata <- read.csv("../siber-scripts/example_layman_data.csv",header=T)
 
 # make the column names availble for direct calling
 # attach(mydata)
@@ -77,8 +77,11 @@ SEA <- numeric(ngroups)
 SEAc <- numeric(ngroups)
 TA <- numeric(ngroups)
 
-dev.new()
-plot(mydata$x, mydata$y, col=mydata$group, type="p")
+#dev.new()
+plot(mydata$x, mydata$y, col=mydata$group, type="p",
+     xlab=expression({delta}^13*C~'\u2030'),
+     ylab=expression({delta}^15*N~'\u2030'))
+
 legend("topright",
        legend = as.character(paste("Group ",unique(mydata$group))),
        pch = 19,
@@ -148,6 +151,47 @@ for (j in unique(mydata$group)){
 # Both measures are equally variable.
 print(cbind(SEA,SEAc,TA))
 ```
+
+## Using Bayesian Inference to calculate uncertainty around ellipses
+So far these still just point-metrics that describe the width of the isotopic niche. That is, they are single numbers for each group, which means that we can't compare one group to another in a statisical sense as we lack a measure of the uncertainty around each estimate. This is where we can use Bayesian Inference to quantify the error associated with fitting these ellipses to each group, that arises from both the number of samples we have, and also their distribution.
+
+Essentially, what the MCMC algorithm does is generate a distribution of covariance matrices that to a greater or lesser extent (in terms of likelihood) describe the observed data. It does so, as is the general case in Bayesian INference, by combing the prior probability with the likelihood of the data for a given covariance matrix.
+
+What we end up with is a range of ellipses that could explain the data, with more of them clustered around the most likely solution. However, one cannot simply take an average across these covariance matrices, as there are strict mathematical properties that must be maintained. The result of this is that it is not possible to plot a mean, median or modal Bayesian Standard Ellipse; instead we must calculate each one of the ellipse's area, and then present summary statistics of this derived measurement.
+
+The plots below represent the posterior distribution of the SEA_B fitted to each of the 4 groups in our dataset.
+
+```{r, fig.width = 8, fig.height = 6}
+# So far we have fitted the standard ellipses based on frequentist methods
+# and calculated the relevant metrics (SEA and SEAc). Now we turn our attention
+# to producing a Bayesian estimate of the standard ellipse and its area SEA_B
+
+
+reps <- 10^4 # the number of posterior draws to make
+
+# Generate the Bayesian estimates for the SEA for each group using the 
+# utility function siber.ellipses
+SEA.B <- siber.ellipses(mydata$x, mydata$y, mydata$group, R = reps)
+
+# ------------------------------------------------------------------------------
+# Plot out some of the data and results
+# ------------------------------------------------------------------------------
+
+
+# Plot the credible intervals for the estimated ellipse areas now
+# stored in the matrix SEA.B
+#dev.new()
+siardensityplot(SEA.B,
+  xlab="Group",ylab="Area (permil^2)",
+  main="Bayesian Standard Ellipse Area (SEA_B)")
+
+# and now overlay the other metrics on teh same plot for comparison
+points(1:ngroups, SEAc, pch = 15, col = "red")
+legend("topright", c("SEAc"),
+       pch = c(15, 17), col = c("red", "blue"))
+```
+
+
 
 
 

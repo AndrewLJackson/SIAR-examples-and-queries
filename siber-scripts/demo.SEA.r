@@ -42,8 +42,11 @@ SEA <- numeric(ngroups)
 SEAc <- numeric(ngroups)
 TA <- numeric(ngroups)
 
-dev.new()
-plot(mydata$x, mydata$y, col=mydata$group, type="p")
+#dev.new()
+plot(mydata$x, mydata$y, col=mydata$group, type="p",
+     xlab=expression({delta}^13*C~'\u2030'),
+     ylab=expression({delta}^15*N~'\u2030'))
+
 legend("topright",
        legend = as.character(paste("Group ",unique(mydata$group))),
        pch = 19,

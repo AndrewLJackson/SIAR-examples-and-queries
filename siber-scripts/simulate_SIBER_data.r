@@ -35,7 +35,7 @@ for (i in 1:ng){
 # plot the data
 plot(dC,dN,type="p",pch=grps,col=grps)
 
-out <- data.frame(Group = grps, Iso1 = dC, Iso2 = dN,
+out <- data.frame(group = grps, x = dC, y = dN,
                   stringsAsFactors = F)
 
 write.csv(out, file = "tmp_siber_data.csv", row.names = F)
