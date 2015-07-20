@@ -152,18 +152,19 @@ legend("topright", c("SEAc"),
 # you need to calculate the proportion of G1 ellipses that are less 
 # than G2
 
-Pg2.gt.g3 <- sum( SEA.B[,1] < SEA.B[,2] ) / nrow(SEA.B)
+Pg1.lt.g2 <- sum( SEA.B[,1] < SEA.B[,2] ) / nrow(SEA.B)
 
 # In this case, all the posterior ellipses for G1 are less than G2 so 
 # we can conclude that G1 is smaller than G2 with p approx = 0, and 
 # certainly p < 0.0001.
 
 # and for G1 < G3
-Pg3.gt.g1 <- sum( SEA.B[,1] < SEA.B[,3] ) / nrow(SEA.B)
+Pg1.lt.g3 <- sum( SEA.B[,1] < SEA.B[,3] ) / nrow(SEA.B)
 
 # etc...
-Pg2.gt.g3 <- sum( SEA.B[,2] > SEA.B[,3] ) / nrow(SEA.B)
+Pg2.lt.g3 <- sum( SEA.B[,2] < SEA.B[,3] ) / nrow(SEA.B)
 
+Pg3.lt.g4 <- sum( SEA.B[,3] < SEA.B[,4] ) / nrow(SEA.B)
 
 
 # ------------------------------------------------------------------------------

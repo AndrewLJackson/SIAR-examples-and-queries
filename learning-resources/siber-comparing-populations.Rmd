@@ -191,7 +191,63 @@ legend("topright", c("SEAc"),
        pch = c(15, 17), col = c("red", "blue"))
 ```
 
+## Comparing the posterior distributions
 
+In order to test whether one group's ellipse is smaller or larger than another, we can simply calculate the probability that its posterior distribution is smaller (or larger). This is acheived by comparing each pair of posterior draws for both groups, and dtermining which is smaller in magnitude. We then find the proportion of draws that are smaller, and this is a direct proxy for the probability that one group's posterior distribution (of ellipse size in this case) is smaller than the other.
+
+
+Here, we first calculate the proportion, and hence probability, of the SEA.B for group 1 being smaller than the SEA.B for group 2.
+
+```{r}
+Pg1.lt.g2 <- sum( SEA.B[,1] < SEA.B[,2] ) / nrow(SEA.B)
+print(Pg1.lt.g2)
+```
+
+So, in this case, all of the estimates for groups 1's ellipse are smaller than for group 2; although we could probably guess at this given that there appears to be no overlap between then 95% credible intervals of the two groups (see the figure above).
+
+Then we can do exactly the same for groups 1 and 3.
+
+```{r}
+Pg1.lt.g3 <- sum( SEA.B[,1] < SEA.B[,3] ) / nrow(SEA.B)
+print(Pg1.lt.g3 )
+```
+
+And then for the other pairings:
+
+```{r}
+Pg1.lt.g4 <- sum( SEA.B[,1] < SEA.B[,4] ) / nrow(SEA.B)
+print(Pg1.lt.g4)
+
+Pg2.lt.g3 <- sum( SEA.B[,2] < SEA.B[,3] ) / nrow(SEA.B)
+print(Pg2.lt.g3)
+
+Pg3.lt.g4 <- sum( SEA.B[,3] < SEA.B[,4] ) / nrow(SEA.B)
+print(Pg3.lt.g4)
+```
+
+
+## Overlap Between Ellipses
+One can calculate the overlap between two (or more) ellipses. In the first instance, this overlap is simply the area, in units of per mil squared, contained by the shape that lies within the overlapping region. This overlap is most easily calculated by using the SEAc of each ellipse.
+
+The overlap between the SEAc for groups 2 and 3 is given by:
+
+```{r}
+overlap.G2.G3 <- overlap(spx[[2]], spy[[2]], 
+                         spx[[3]], spy[[3]],
+                         steps = 1)
+print(overlap.G2.G3)
+```
+
+One might then wish to calculate the proportion overlap; athough one then runs into a choice as to what the demoninator will be in the equation. You could for instance calculate the proportion of A that overlaps with B, the proporiton of B that overlaps with A, or the proportion of A and B that overlap with each other.
+
+```{r}
+overlap.G2.G3$overlap / overlap.G2.G3$area1
+
+overlap.G2.G3$overlap / overlap.G2.G3$area2
+
+overlap.G2.G3$overlap / (overlap.G2.G3$area1 + overlap.G2.G3$area2)
+
+```
 
 
 
