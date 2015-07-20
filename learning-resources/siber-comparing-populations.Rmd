@@ -249,7 +249,7 @@ overlap.G2.G3$overlap / (overlap.G2.G3$area1 + overlap.G2.G3$area2)
 
 ```
 
-
+A problem with this simple overlap calculation is that it yields a point-estimate of overlap based on the maximum likelihood estimated SEA_c. One could in theory calculate the overlap for each ellipse created by the MCMC chain and therefore get a distribution of uncertainty around this measure. However, this requires some code to be written to loop over all the posterior means and covariance matrices and calculate overlap for each one. The overlap code is in a separate package, is relatively slow to run, and will need to be applied to every row in the posterior output. SIBER does not currently have a function to perform this calculation.
 
 
 
