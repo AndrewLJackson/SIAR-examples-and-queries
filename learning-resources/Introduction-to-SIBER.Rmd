@@ -37,6 +37,7 @@ M <- plot.siber.data("../siber-scripts/example_layman_data_2.csv",
 # create a blank plot to house the legend
 plot(0, type = "n", bty = "n", xaxt = "n", yaxt = "n",
      xlab = "", ylab = "")
+
 legend("center",
        legend = as.character(c(paste("Group ",1:M),
                                "Convex hull \n through means")),
