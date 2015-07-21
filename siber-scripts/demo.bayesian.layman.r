@@ -16,12 +16,11 @@ library(siar)
 
 # read in some data
 mydata <- read.csv("example_layman_data_2.csv", header=T)
-attach(mydata) # make the names of the columns available for direct calling
 
 # calculate the Bayesian Layman metrics given data for Isotopes 1 and 2, 
 # a grouping variable group and a number of iterations to use to generate
 # the results
-metrics <- siber.hull.metrics(x,y,group,R=10^4)
+metrics <- siber.hull.metrics(mydata$x, mydata$y, mydata$group, R=10^4)
 
 
 
@@ -37,17 +36,21 @@ xlabels <- attributes(metrics)$dimnames[[2]]
 
 # Now lets calculate the convex hull as per the current method based
 # simply on the means for each group
-means.x <- aggregate(x,list(group),mean)$x
-means.y <- aggregate(y,list(group),mean)$x
+means.x <- aggregate(mydata$x,list(mydata$group),mean)$x
+means.y <- aggregate(mydata$y,list(mydata$group),mean)$x
 sample.hull <- convexhull(means.x,means.y)
 
+# get the 6 layman metrics based on the means of each group, i.e. the Maximum
+# Likelihood estimates
+ML.layman <- laymanmetrics(means.x, means.y)
+
 # knowing how many groups we have is useful for constraining the plot 
-M <- max(group)
+M <- max(mydata$group)
 
 #dev.new()
 par(mfrow=c(1,1))
 plot(x, y,
-     col = group,
+     col = mydata$group,
      xlab = "Isotope 1",
      ylab = "Isotope 2",
      pch = 1, asp=1, 
@@ -70,11 +73,23 @@ par(mfrow = c(1,2))
 
 hist(metrics[,"TA"], freq = F, xlab = "TA", ylab = "Density", main="")
 
+# add a vertical line indicating the TA based on the sample means
+# but you may not want this.
+abline(v = ML.layman$hull$TA, col = "red", lwd = 2, lty = 2)
+
+# -------------------------------------
 siardensityplot(metrics[,c(1,2,4,5,6)],
                 xticklabels = xlabels[c(1,2,4,5,6)],
                 ylims = c(0,25),
                 ylab = expression('\u2030'),
                 xlab = "Metric")
+
+# this is a bit hardcoded, but basically it converts the contents of 
+# ML.layman metrics from a list into a vector, and then pulls out the
+# appropriate entries corresponding to the right metrics... i just looked this
+# up and counted in to find the correct entry numbers... hardly elegant.
+# But you may not want this... its just reasssuring to see they match.
+points(1:5, unlist(ML.layman)[c(1,2,19,20,21)], col = "red", pch = "x")
 
 
 detach(mydata)
