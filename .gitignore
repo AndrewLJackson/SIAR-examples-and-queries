@@ -15,7 +15,7 @@
 /plots
 
 # other files
-#*.html
+*.html
 
 # files specific to this project
 tmp_siber_data.csv
