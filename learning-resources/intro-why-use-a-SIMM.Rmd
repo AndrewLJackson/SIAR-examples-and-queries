@@ -1,0 +1,52 @@
+---
+title: 'Monday 09:15--10:00: Isotope Models for Ecology'
+author: "Andrew Jackson"
+date: "21st July 2015"
+output:
+  ioslides_presentation:
+    logo: images/tcd-stacked-square.png
+    transition: slower
+---
+
+## Questions ecologists often ask
+
+> - What is this aniimal eating?
+> - Are these animals specialists or generalists?
+> - Why are these populations of animals eating different things?
+> - How is this community functioning?
+
+## Isotopes can provide insights
+<img src="images/ideal_iso_community.png" alt="Idealised Community" width="600">
+
+## Moving heavy isotopes is hard work
+<img src="images/heavy_frac.png" alt="heavy isotopes fractionate" width="600">
+
+## Heavy isotopes are chemically sticky
+<img src="images/chem_frac.png" alt="chemical reactions fractionate" width="600">
+
+## Observe the states and infer the process
+<img src="images/infer_process.png" alt="infer the process by observing the state" width="600">
+
+## Ecological process inferred by isotopes
+> Newsome, Martinez del Rio, Bearhop & Phillips. 2007. A Niche for Isotopic Ecology. Frontiers in Ecology and the Environment. 
+> d-space and p-space
+
+<img src="images/dspace-pspace.png" alt="moving from d-space to p-space" width="600">
+
+## Stable Isotope Mixing Models move from d-space to p-space
+<img src="images/simm-1.png" alt="moving from d-space to p-space" width="600">
+
+## Inference from d-space
+> Bearhop, Adam, Waldron, Fuller & MacLeod. 2004. Determining trophic niche width: a novel approach using stable isotope analysis. J Anim Ecol.
+
+<img src="images/specialist-generalist.png" alt="moving from d-space to p-space" width="600">
+
+## Drivers of niche width
+Layman et al. 2007. Niche width collapse in a resilient top predator following ecosystem fragmentation.
+
+<img src="images/layman-frag.png" alt="niche width shrinks with fragmentation" width="500">
+
+## Invasive species
+Jackson, M.C. et al. 2012. Population-Level Metrics of Trophic Structure Based on Stable Isotopes and Their Application to Invasion Ecology. PLoSONE. 
+
+<img src="images/crayfish-carp.png" alt="niche width shrinks with fragmentation" width="450">
