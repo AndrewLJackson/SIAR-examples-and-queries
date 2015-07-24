@@ -28,4 +28,45 @@ output:
     - high carbon / nitrogen diets
     - reproduction
 
-## new slide
+## A priori questions - 1
+Use prior knowledge to identify questions
+
+## Consider diet - 2
+Consider what is known about the animal's diet
+
+## Sample collection - 3
+
+## Enrichment factors - 4
+Use appropriate diet-tissue discrimination factors
+
+## Plot your data - 5
+- biplot here
+- mention Fry's graphical concerns
+
+## Include all sources in an informed way - 6
+
+- ?????
+
+## Consider grouping sources - 7
+<img src="images/posteriori-agg.png" alt="aggregation of estimates" width="430" style="float:right;">
+- we will come to this later in the course
+
+## Concentration and routing - 8
+- isotopic concentration differs among sources (IsoConc)
+- add isoconc warped plot
+- mention routing
+
+## Incorporate uncertainty - 9
+- consider and incorporate uncertainty
+
+## Report distributions of results - 10
+- credible intervals
+
+## Limitations - 11
+- stuff
+- more stuff
+
+## New horizons - 12
+- future developments
+
+
