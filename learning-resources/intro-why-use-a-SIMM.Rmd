@@ -50,6 +50,92 @@ output:
 
 <img src="images/simm-1.png" alt="siar output example" width="600">
 
+## Determined system - 2 sources 1 tracer
+
+> - How much of black and blue is the red dot made of?
+> - ``` consumer = (1/3)*(-10) + (2/3)*(5) = 0```
+
+```{r, echo=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
+plot(c(-10, 0, 5), c(0,0,0), pch = c(15,16,15), col = c(1,2,4),
+     xlab = "", ylab = "", bty="L", cex = 4)
+```
+
+## Determined system - 3 sources 2 tracers
+> - How much of black, blue and magenta is the red dot made of?
+> - ``` p = c(0.2, 0.4, 0.4) ```
+
+```{r, echo=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
+
+s1 <- c(-10, 2)
+s2 <- c(0, 8)
+s3 <- c(5, 3)
+
+sources <- rbind(s1, s2, s3)
+
+p <- c(0.2, 0.4, 0.4)
+
+consumer <- p %*% sources
+
+plot(sources[,1], sources[,2], pch = c(15,15,15), col = c(1,6,4),
+     xlab = "", ylab = "", bty="L", cex = 4, asp = 1, xlim = c(-12,6),
+     ylim = c(0, 10))
+points(consumer[1], consumer[2], pch = 16, col = 2, cex = 4)
+```
+
+## Under-determined - 3 sources 1 tracers
+> - problems arise
+> - ``` 1/3 black + 2/3 blue ```
+> - ``` 1/6 back + 5/6 magenta ```
+> - ``` 1/3 back + 1/6 magenta + 3/5 blue```
+
+```{r, echo=FALSE, message=FALSE, fig.width = 8, fig.height = 2.5}
+plot(c(-10, 0, 2, 5), c(0,0,0,0), pch = c(15,16,15,15), col = c(1,2,6,4),
+     xlab = "", ylab = "", bty="L", cex = 4, ylim = c(-0.5, 0.5), yaxt = "n")
+```
+
+
+## Under-determined - 4 sources 2 tracers
+> - similar issue but more nuanced
+
+
+```{r, echo=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
+
+s1 <- c(-10, 2)
+s2 <- c(0, 8)
+s3 <- c(5, 3)
+s4 <- c(-5, 8)
+
+sources <- rbind(s1, s2, s3, s4)
+
+p <- c(0.2, 0.4, 0.4, 0)
+
+consumer <- p %*% sources
+
+plot(sources[,1], sources[,2], pch = c(15,15,15, 15), col = c(1,6,4,5),
+     xlab = "", ylab = "", bty="L", cex = 4, asp = 1, xlim = c(-12,6),
+     ylim = c(0, 10))
+points(consumer[1], consumer[2], pch = 16, col = 2, cex = 4)
+```
+
+## IsoSource
+
+<img src="images/isosource-screenshot.png" alt="histogram output from isosource" width="430" style="float:right;">
+
+> - took a brute force approach
+> - try every possible combination of sources in 1% increments
+> - accept if within some treshold of the mixture (consumer)
+> - reject if outside treshold
+
+## SIAR / MixSIR / MixSIAR
+
+<img src="images/siar-histograms.png" alt="histogram output from siar" width="430" style="float:right;">
+
+> - uses Bayesian Inference to assign probabilities to the estimates
+> - frequency of occurrence, and proximity of estimate to the observed value increases the probability of a solution
+> - can also include prior information that weights the probability of a solution
+
+
+
 ## Comparing dietary proportions
 
 - Proportion of terrestrial grass in the diet of Brent geese
