@@ -1,0 +1,31 @@
+---
+title: "Tuesday 09:15-10:00 SIAR dos and donts"
+author: "Andrew L Jackson"
+date: "24 July 2015"
+output:
+  ioslides_presentation:
+    logo: images/tcd-stacked-square.png
+    transition: slower
+    css: mystyle.css
+---
+
+## Basic Mixing Model Assumptions
+
+<img src="images/siar-biplot.png" alt="basic isotope biplot" width="430" style="float:right;">
+
+
+> - All sources are known
+> - Source means are known
+> - TEFs are known
+
+
+## Additional Biological Assumptions
+
+> - Consumer tissue sampled at appropriate time relative to sources
+> - Consumer is at equilibrium with their food
+> - TEF is a fair reflection of consumer physiology
+    - fasting
+    - high carbon / nitrogen diets
+    - reproduction
+
+## new slide
