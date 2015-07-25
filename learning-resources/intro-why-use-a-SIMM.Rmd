@@ -22,7 +22,7 @@ output:
 
 ## Questions ecologists often ask
 
-> - What is this aniimal eating?
+> - What is this animal eating?
 > - Are these animals specialists or generalists?
 > - Why are these populations of animals eating different things?
 > - How is this community functioning?

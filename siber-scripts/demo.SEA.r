@@ -19,7 +19,7 @@ graphics.off()
 
 # read in some data
 # NB the column names have to be exactly, "group", "x", "y"
-mydata <- read.csv("example_ellipse_data.csv",header=T)
+mydata <- read.csv("example_layman_data.csv",header=T)
 
 # make the column names availble for direct calling
 # attach(mydata)

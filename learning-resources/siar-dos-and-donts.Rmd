@@ -27,6 +27,11 @@ output:
     - fasting
     - high carbon / nitrogen diets
     - reproduction
+    
+## Some (11) Dos and donts of mixing models
+
+<img src="images/dos-and-donts.png" alt="title of can j zoology paper" width="800">
+
 
 ## A priori questions - 1
 > - The general question "What does this/these animal(s) eat?" is commonplace
@@ -132,14 +137,13 @@ points(sources[,1] - 1, sources[,2] - 3,
 <img src="images/isoconc.png" alt="concentration can warp the mixing polygon" height="430" style="float:right;">
 
 > - Not all sources have same concentration of elements
-  > - Berries are nearly all carbon
-  > - Flesh is mostly nitrogen
+    - Berries are nearly all carbon
+    - Flesh is mostly nitrogen
 > - Consuming equal proportions of each source by bulk mass can lead to more carbon influence from the carbon rich source
 > - Considering this concentration dependence can warp the mixing polygon
 > - Phillips & Koch. 2002. Incorporating concentration dependence in stable isotope mixing models
 
 ## Isotope routing - 8b
-
 > - related to concentration dependence effects, once assimilated, different molecules get sent through different pathways en route to tissue formation. 
 > - more of the assimilated carbon might go one route
 > - while more of the nitrogen might go elsewhere
@@ -148,16 +152,52 @@ points(sources[,1] - 1, sources[,2] - 3,
 > - generally not well understood, so best advice is to pick appropriate discrimimation factor and add uncertainty
 
 ## Incorporate uncertainty - 9
-- consider and incorporate uncertainty
+> - Estimate mean consumer diet +/- error
+> - **SIAR** pushes this error to residual error
+> - **MixSIR** pushes it on the proportions
+> - Uncertainty on Sources
+> - specified as sd in **SIAR** / **MixSIR**
+> - can be estimated from data in ***MixSIAR***
+> - Discrimination / Enrichment Factors
+> - specified as sd
+> - No errors on Concentrations in current formulations
 
-## Report distributions of results - 10
+## Report distributions of results - 10a
+
+<img src="images/siar-by-group.png" alt="effect of omitting a source" width="400" style="float:right;">
+
+- mode
+- mean
+- median
 - credible intervals
 
+## Report distributions of results - 10a
+
+<img src="images/matrix-plot.png" alt="effect of omitting a source" width="400" style="float:right;">
+
+> - negative correlations imply inability to discern between sources
+    - consider a posteriori aggregation
+    - the negative correlation can shrink their combined variance
+    - ```var(a+b) = var(a) + var(b) - 2*(cov(a,b))```
+> - positive correlations indicate solutions where increasing one source requires inclusion of another
+    - e.g. diametrically opposed sources
+
+
+
 ## Limitations - 11
-- stuff
-- more stuff
+> - Geometry of your data
+> - Biology
+> - The fitting algorithm
+    - convergence
+    - autocorrelation
+    - number of samples
 
 ## New horizons - 12
-- future developments
+> - including other contraints
+    - p(1) > p(2) & p(1) > p(3)
+> - reconstruct entire food-webs
+> - amino acids
+> - better informed priors
+    - from e.g. DNA or abundance data
 
 
