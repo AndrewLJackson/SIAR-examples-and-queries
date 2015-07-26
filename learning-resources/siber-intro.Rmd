@@ -4,9 +4,9 @@ author: "Andrew L Jackson"
 date: "24 July 2015"
 output:
   ioslides_presentation:
+    css: mystyle.css
     logo: images/tcd-stacked-square.png
     transition: slower
-    css: mystyle.css
 ---
 
 
@@ -19,19 +19,23 @@ output:
 > - Idea is that isotopic niche correlates in some way with ecological niche
 
 ## Specialists Vs generalists
-- Bearhop, Adam, Waldron, Fuller & MacLeod. 2004. Determining trophic niche width: a novel approach using stable isotope analysis. J Anim Ecol.
 
-<img src="images/specialist-generalist.png" alt="specialists vs generalists in isotope d-space" width="600">
+<img src="images/specialist-generalist.png" alt="specialists vs generalists in isotope d-space" width="700">
+
+<div class="ref">Bearhop, Adam, Waldron, Fuller & MacLeod. 2004. Determining trophic niche width: a novel approach using stable isotope analysis. J Anim Ecol.</div>
 
 ## Drivers of niche width
-- Layman et al. 2007. Niche width collapse in a resilient top predator following ecosystem fragmentation.
 
 <img src="images/layman-frag.png" alt="niche width shrinks with fragmentation" height="400">
 
-## Invasive species
-- Jackson, M.C. et al. 2012. Population-Level Metrics of Trophic Structure Based on Stable Isotopes and Their Application to Invasion Ecology. PLoSONE. 
+<div class="ref">Layman et al. 2007. Niche width collapse in a resilient top predator following ecosystem fragmentation.</div>
 
-<img src="images/crayfish-carp.png" alt="niche width of native species affected by invasive species" height="340">
+## Invasive species
+
+<img src="images/crayfish-carp.png" alt="niche width of native species affected by invasive species" height="400">
+
+<div class="ref">Jackson, M.C. et al. 2012. Population-Level Metrics of Trophic Structure Based on Stable Isotopes and Their Application to Invasion Ecology. PLoSONE. </div>
+
 
 ## The problem with convex hulls
 They can only get bigger.
@@ -75,13 +79,13 @@ lines(ZX[hpts, ], col = "red", lty = 2)
 
 ## Uncertainty of the ellipse
 
-<img src="images/ellipse-vs-hulls.png" alt="comparison of ellipses and hulls" height="450" style="float:right;">
+<img src="images/ellipse-vs-hulls.png" alt="comparison of ellipses and hulls" width="800" style="float:right;">
 
 ## Sample size, ellipses and hulls
 
-<img src="images/sample-size-hulls-ellipses.png" alt="effect of sample size on fitted hulls and ellipses" width="800" style="float:right;">
+<img src="images/sample-size-hulls-ellipses.png" alt="effect of sample size on fitted hulls and ellipses" width="800">
 
-a) Ellipses & b) Hulls
+a = Ellipses & b = Hulls
 
 ## Sample size and bias in ellipse estimation
 

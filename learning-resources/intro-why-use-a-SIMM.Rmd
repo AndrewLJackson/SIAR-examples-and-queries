@@ -159,19 +159,22 @@ points(consumer[1], consumer[2], pch = 16, col = 2, cex = 4)
 > - Idea is that isotopic niche correlates in some way with ecological niche
 
 ## Specialists Vs generalists
-- Bearhop, Adam, Waldron, Fuller & MacLeod. 2004. Determining trophic niche width: a novel approach using stable isotope analysis. J Anim Ecol.
 
 <img src="images/specialist-generalist.png" alt="specialists vs generalists in isotope d-space" width="600">
 
+<div class="ref">Bearhop, Adam, Waldron, Fuller & MacLeod. 2004. Determining trophic niche width: a novel approach using stable isotope analysis. J Anim Ecol.</div>
+
 ## Drivers of niche width
-- Layman et al. 2007. Niche width collapse in a resilient top predator following ecosystem fragmentation.
 
 <img src="images/layman-frag.png" alt="niche width shrinks with fragmentation" height="400">
 
-## Invasive species
-- Jackson, M.C. et al. 2012. Population-Level Metrics of Trophic Structure Based on Stable Isotopes and Their Application to Invasion Ecology. PLoSONE. 
+<div class="ref">Layman et al. 2007. Niche width collapse in a resilient top predator following ecosystem fragmentation.</div>
 
-<img src="images/crayfish-carp.png" alt="niche width of native species affected by invasive species" height="340">
+## Invasive species
+
+<img src="images/crayfish-carp.png" alt="niche width of native species affected by invasive species" height="400">
+
+<div class="ref">Jackson, M.C. et al. 2012. Population-Level Metrics of Trophic Structure Based on Stable Isotopes and Their Application to Invasion Ecology. PLoSONE. </div>
 
 ## The question is key
 > - as with all science, your question will determine which analysis you require
