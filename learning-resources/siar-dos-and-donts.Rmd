@@ -4,7 +4,7 @@ author: "Andrew L Jackson"
 date: "24 July 2015"
 output:
   ioslides_presentation:
-    logo: images/tcd-stacked-square.png
+    logo: images/tcd-stacked-square-2.png
     transition: slower
     css: mystyle.css
 ---
@@ -27,6 +27,9 @@ output:
     - fasting
     - high carbon / nitrogen diets
     - reproduction
+    - growth
+    - hibernation
+    - migration
     
 ## Some (11) Dos and donts of mixing models
 
@@ -43,7 +46,7 @@ output:
     - how does their diet vary over time?
 
 ## Consider diet - 2
-Consider what is known about the animal's diet
+>- Consider what is known about the animal's diet
  > - you need to know all the food sources they eat
  > - A SIMM can then tell you what proportion of each occurs in their diet
  > - Provides a longer term average than say gut or faeces contents analysis
@@ -60,7 +63,7 @@ Consider what is known about the animal's diet
     
 ## Sample collection - 3b
 
-<img src="images/semmens-2009.tif" alt="basic isotope biplot" width="400" style="float:right;">
+<img src="images/semmens-2009.TIF" alt="basic isotope biplot" width="400" style="float:right;">
 
 > - Sources may vary in isotopic concentrations over time
 > - Sources likely vary through space
@@ -132,7 +135,7 @@ points(sources[,1] - 1, sources[,2] - 3,
 > - better to aggregate after fitting a SIMM
 > - can gain remarkably increased precision about a less detailed question
 
-## Isotope concentration - 8a
+## Elemental concentration - 8a
 
 <img src="images/isoconc.png" alt="concentration can warp the mixing polygon" height="430" style="float:right;">
 
@@ -178,7 +181,7 @@ points(sources[,1] - 1, sources[,2] - 3,
 > - negative correlations imply inability to discern between sources
     - consider a posteriori aggregation
     - the negative correlation can shrink their combined variance
-    - ```var(a+b) = var(a) + var(b) - 2*(cov(a,b))```
+    - ```var(a+b) = var(a) + var(b) + 2*(cov(a,b))```
 > - positive correlations indicate solutions where increasing one source requires inclusion of another
     - e.g. diametrically opposed sources
 

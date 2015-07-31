@@ -148,6 +148,7 @@ legend("topright", c("SEAc"),
 # Compare two ellipses for significant differences in SEA
 # ------------------------------------------------------------------------------
 
+
 # to test whether Group 1 SEA is smaller than Group 2...
 # you need to calculate the proportion of G1 ellipses that are less 
 # than G2
@@ -165,6 +166,22 @@ Pg1.lt.g3 <- sum( SEA.B[,1] < SEA.B[,3] ) / nrow(SEA.B)
 Pg2.lt.g3 <- sum( SEA.B[,2] < SEA.B[,3] ) / nrow(SEA.B)
 
 Pg3.lt.g4 <- sum( SEA.B[,3] < SEA.B[,4] ) / nrow(SEA.B)
+
+# An alternative approach is to calulate the effect size. That is, the 
+# difference in size between the two ellipses. If this difference is close 
+# to zero, then there is little differnce, and if it is far away from zero 
+# then the effect size is large. Again, this difference is a distribution.
+
+diff.g1.g2 <- SEA.B[,1] - SEA.B[,2]
+diff.g3.g4 <- SEA.B[,3] - SEA.B[,4]
+                                
+# plot a histogram of this difference
+hist(diff.g1.g2, 50)
+abline(v = 0, col = 'red') # add a vertical line at zero
+
+# plot a histogram of this difference
+hist(diff.g3.g4, 50)
+abline(v = 0, col = 'red') # add a vertical line at zero
 
 
 # ------------------------------------------------------------------------------

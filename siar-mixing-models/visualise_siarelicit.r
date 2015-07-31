@@ -17,7 +17,7 @@ library(siar)
 alpha <- c(6,2,2)
 
 # number of smpales to draw from the corresponding dirichlet
-reps <- 10^4
+reps <- 10^3
 
 # prep a matrix to collect the simulated values in for visualisation
 # each row is an observation with each column corresponding to a source

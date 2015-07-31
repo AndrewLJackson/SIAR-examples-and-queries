@@ -4,10 +4,29 @@ author: "Andrew Jackson"
 date: "21st July 2015"
 output:
   ioslides_presentation:
-    logo: images/tcd-stacked-square.png
+    logo: images/tcd-stacked-square-2.png
     transition: slower
     css: mystyle.css
 ---
+
+## Lecture Topics
+
+- Why use a Stable Isotope Mixing Model
+- Introduction to Bayesian statistics
+- Regression models and SIMMS
+- Dos and Donts of using SIAR
+- Statistical model behind SIAR
+- Stable Isotope Bayesian Ellipses (SIBER)
+- SIAR Vs MixSIAR
+- SIMMS for complex data
+- Source grouping
+- Building your own SIMM with jags
+
+## Practicals
+- R revision
+- SIAR
+- SIBER
+- MixSIAR and jags
 
 ## General pattern for this course
 - 09:15 - 10:00 Lecture
@@ -40,9 +59,8 @@ output:
 <img src="images/infer_process.png" alt="infer the process by observing the state" width="600">
 
 ## Ecological process inferred by isotopes
-- Newsome, Martinez del Rio, Bearhop & Phillips. 2007. A Niche for Isotopic Ecology. Frontiers in Ecology and the Environment. 
+- <div style="ref">Newsome, Martinez del Rio, Bearhop & Phillips. 2007. A Niche for Isotopic Ecology. Frontiers in Ecology and the Environment.</div> 
 - d-space and p-space
-
 <img src="images/dspace-pspace.png" alt="moving from d-space to p-space" width="600">
 
 ## Mixing Models move from d- to p-space
@@ -85,8 +103,8 @@ points(consumer[1], consumer[2], pch = 16, col = 2, cex = 4)
 ## Under-determined - 3 sources 1 tracers
 > - problems arise
 > - ``` 1/3 black + 2/3 blue ```
-> - ``` 1/6 back + 5/6 magenta ```
-> - ``` 1/3 back + 1/6 magenta + 3/5 blue```
+> - ``` 1/6 black + 5/6 magenta ```
+> - ``` 1/3 black + 1/6 magenta + 3/5 blue```
 
 ```{r, echo=FALSE, message=FALSE, fig.width = 8, fig.height = 2.5}
 plot(c(-10, 0, 2, 5), c(0,0,0,0), pch = c(15,16,15,15), col = c(1,2,6,4),
@@ -139,14 +157,12 @@ points(consumer[1], consumer[2], pch = 16, col = 2, cex = 4)
 ## Comparing dietary proportions
 
 - Proportion of terrestrial grass in the diet of Brent geese
-
 <img src="images/grass-in-geese.png" alt="geese eat grass in different proportions" width="700">
 
 
 ## Diet over time
 
 - Diet can be linked to covariates such as time
-
 <img src="images/swallows-over-time.png" alt="swallow diets change over time" width="800">
 
 
@@ -182,5 +198,3 @@ points(consumer[1], consumer[2], pch = 16, col = 2, cex = 4)
 > - If you need to know what an animal is eating, then you require a SIMM
 > - if you want to compare the niche widths of populations then you probably want the ellipse functions in SIBER
 > - if you want to compare entire communities for niche structure, then you probably want the hull-based metrics in SIBER
-
-

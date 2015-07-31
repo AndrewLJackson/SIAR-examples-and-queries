@@ -49,13 +49,13 @@ M <- max(mydata$group)
 
 #dev.new()
 par(mfrow=c(1,1))
-plot(x, y,
+plot(mydata$x, mydata$y,
      col = mydata$group,
      xlab = "Isotope 1",
      ylab = "Isotope 2",
      pch = 1, asp=1, 
-     xlim = c( min(x)-2, max(x)+2), 
-     ylim = c( min(y)-2, max(y)+2)
+     xlim = c( min(mydata$x)-2, max(mydata$x)+2), 
+     ylim = c( min(mydata$y)-2, max(mydata$y)+2)
      )
 
 lines(sample.hull$xcoords, sample.hull$ycoords, lty = 1, col = 1, lwd = 2)
@@ -92,4 +92,3 @@ siardensityplot(metrics[,c(1,2,4,5,6)],
 points(1:5, unlist(ML.layman)[c(1,2,19,20,21)], col = "red", pch = "x")
 
 
-detach(mydata)

@@ -1,0 +1,40 @@
+---
+title: "monday-practical"
+author: "Andrew L Jackson"
+date: "27 July 2015"
+output: html_document
+---
+
+## R revision
+
+`/aj_notes/jackson_podcast scripts_intro_to_R`
+
+### Graphics
+
+- `basic_summary_statistics.r`
+- `histograms_template.r`
+- `boxplots_template.r`
+- `boxplots_template.r`
+- `scatter_plots_template.r`
+
+### Basic linear models
+- `t_tests_example.r`
+- `linear_regression_template.r`
+- `binary_regression_template.r` 
+
+----
+
+## Run basic SIMM in JAGS
+
+- copy R code from
+  - `library(rjags)`
+  - `library(siar)`
+  - lines 194 to 211 in `/ap_notes/module_3_reg_and_simms.Rmd`
+  - lines 155 - 166
+- run the model and explore the posterior samples
+- check for convergence
+- check for autocorrelation in the posterior
+- assess incluence of priors on the output
+
+
+ 

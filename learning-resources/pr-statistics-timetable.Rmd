@@ -1,0 +1,204 @@
+---
+title: "PR-statistics-timetable"
+author: "Andrew L Jackson"
+date: "27 July 2015"
+output: html_document
+---
+
+## Monday 
+9:00 students arrive
+
+9:15 - 10:00: Introduction; why use a SIMM? (AJ) Module 1 
+
+10:00 - 10:45: *Discussion 1* and coffee
+
+10:45 - 11:30 An introduction to Bayesian statistics (AP) Module 2 
+
+11:30 - 12:00: *Discussion 2* and break 
+
+12:00 - 12:45: Differences between regression models and SIMMs. (AP) Module 3 
+
+12:45 - 14:00: Lunch
+
+14:00 - 15:30: Practical: Revision on using R to load data, create plots and fit statistical models (AJ) Practical 1
+
+15:30 - 16:00: Break 
+
+16:00 - 17:30: *Discussion 3*: understanding Bayesian models 
+
+### Discussion 1
+- think about for next course; lecture ran on a  bit.
+
+### Discussion 2
+- think about for next course; lecture ran on a bit.
+
+### Discussion 3
+- Difference between Frequentist and Bayesian statistics
+- Informative, vague and flat priors
+- how do you compare two posteriors, e.g. between two dietary proportions
+  - effect size
+  - probability of one posterior being bigger than another
+- Posterior checking
+  - Chains
+    - convergence
+    - initial conditions
+    - burn-in period
+  - Auto-correlation
+    - `acf()` function to check for AC
+    - thinning
+    
+
+
+----
+
+## Tuesday 
+9:00 students arrive
+
+9:15 - 10:00: Dos and don'ts of using SIAR (AJ) Module 4 
+
+10:00 - 10:45: *Discussion 1* and coffee 
+
+10:45 - 11:30 Dos and don'ts of using SIAR (AJ) Module 4 
+
+11:30 - 12:00: *Discussion 2* and break 
+
+12:00 - 12:45: The statistical model behind SIAR (AP) Module 5 
+
+12:45 - 14:00: Lunch 
+
+14:00 - 15:30: Practical: using SIAR for real-world data sets (AP) Practical 2 
+
+15:30 - 16:00: Break
+
+16:00 - 17:30: *Discussion 3* issues when using simple SIMMs 
+
+### Discussion 1
+- Source sampling and tissue integration time
+  - how many
+  - when
+- Experimental design
+  - manipulated tracer in sources
+- Trophic enrichment factors: where do you get them from?
+  - how do they affect our estimates?
+  - lipid extraction? ***sources are corrected individually***
+  - isotopic routing or proportion dependent correction
+
+
+### Discussion 2: geometry and source issues
+- Source geometry
+  - missing sources
+  - outside mixing polygon (some or all of population)
+    - source and TEF error help this
+  - more than two tracers
+  - small sample size
+
+### Discussion 3: SIBER
+- How does ellipse and hull fitting differ in SIBER?
+- how to account for baseline differences
+- how to work out trophic niche (?a SIAR question?)
+
+
+----
+
+## Wednesday 
+9:00 students arrive 
+
+9:15 - 10:00: Creating and understanding Stable Isotope Bayesian Ellipses (SIBER) (AJ) Module 6
+
+10:00 - 10:45: *Discussion 1* and coffee 
+
+10:45 - 12:00: What are the differences between SIAR and MixSIAR? (AP) Module 7 
+
+12:00 - 13:00: Lunch 
+
+13:00 - 16:00: Practical: Using SIBER (AJ) Practical 3  & Source grouping in SIMMs: when and how? (AJ) Module 9
+
+16:00: Finish
+
+17:00: Dinner, walk & pub
+
+### Discussion 1
+- Working with more than 2 isotopes 
+  - over-determined systems
+
+### Discussion 2
+- Covariance in the posterior distributions
+
+----
+
+## Thursday: 
+9:00 students arrive
+
+9:15 - 10:00:  Practical: using MixSIAR and JAGS on real world data sets; benefits over SIAR (AP) Practical 4 
+
+10:00 - 10:45: *Discussion 1* and coffee
+
+10:45 - 11:30: Free analysis time
+
+11:30 - 12:00: Break 
+
+12:00 - 12:45 Free analysis time
+
+12:45 - 14:00: Lunch
+
+14:00 - 17:30: *Discussion 2*: bring your own data set
+
+### Discussion 1
+- Model selection
+  - DIC
+
+
+### Discussion 2
+
+
+----
+
+## Summary of class questions not covered
+
+
+## Class topics
+
+- hydro-power impacts
+- sources of contaminants in top predators
+- zooplankton diet
+- anthropogenic disturbance
+- diet specialisation in eels and linking to other ecological metrics
+- effect of contaminants on leaf litter decomposition
+- relating diet to fitness in herring gulls
+- trophic niche width in mammals
+- resource use in bats affected by habitat fragmentation
+- fatty acid analysis of arctic copepods; wolves and 
+- invasive amphipods incoporating genetics; niche widths related to functional traits
+- impact of climate change on fish mediated effects on communities
+- food-web analysis; forests
+- nitrogen in soil and determining sources of NO
+- perturbation effects on community structure (climate change and contaminants)
+- native and invasive Gammarus
+- spatial movement of individuals
+- tracking added Carbon through food-webs
+- marine food webs
+- river restoration, and invert grazing pressure on algae
+- trophic structure of fish in lagoons
+- time series reconstruction, palaeo, museum specimens
+- pelagic foodweb reconstruction
+- chemo-autotrophic food production in marine ecosystems
+- feeding ecology of wild boar and deer; supplementary feeding from agriculture
+- fate of sources in food webs; trophic cascade effects; bottom-up effects; using SIMMS to compliment food web models
+- conservation and endangered species; food web changes
+- seagrass meadows and impacts on benthic foodweb; compare benthic and pelagic in fjords
+- 
+
+
+## Ideas from the course
+- using DIC or "information loss functions" to help design optimal sampling in terms of:
+  - number of tracers
+    - Fatty acids (NB sum to 100% sometimes)
+    - Additional isotopes
+  - how does your choice of tracers affect your interpretation of the results?
+  - how important is concentration dependence
+    
+
+
+
+  
+

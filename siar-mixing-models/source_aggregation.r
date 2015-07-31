@@ -153,7 +153,6 @@ siarmatrixplot(model2)
 # ------------------------------------------------------------------------------
 # The more honest thing to do is aggregate C and D posterior estimates 
 # ------------------------------------------------------------------------------
-
 # go back to model1 and aggregate C and D.
 CD.posteriori.aggregated <-  cbind(model1$output[,c("A","B")],
                                    rowSums(model1$output[,c("C","D")]))
@@ -166,9 +165,9 @@ siardensityplot(CD.posteriori.aggregated,
                 xticklabels=c('A','B','C+D'),
                 main = "Sources C and D combined a posteriori")
 pairs(CD.posteriori.aggregated,
-       diag.panel = panelhist,
-       lower.panel = panelcor,
-       upper.panel = panelcontour)
+      diag.panel = panelhist,
+      lower.panel = panelcor,
+      upper.panel = panelcontour)
 
 
 
