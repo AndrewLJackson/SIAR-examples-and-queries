@@ -25,7 +25,7 @@ palette(viridis(4))
 
 
 # read in the data
-mydata <- read.csv("../siber-scripts/example_layman_data.csv",
+mydata <- read.csv("example_layman_data.csv",
                    header=T)
 
 # create the siber object

@@ -99,8 +99,8 @@ plotGroupEllipses(siber.example, n = 100, p.interval = 0.95,
 
 # or you can add the XX% confidence interval around the bivariate means
 # by specifying ci.mean = T along with whatever p.interval you want.
-plotGroupEllipses(siber.example, n = 100, p.interval = 0.95, ci.mean = T,
-                    lty = 1, lwd = 2)
+plotGroupEllipses(siber.example, n = 100, p.interval = 0.95,
+                  ci.mean = T, lty = 1, lwd = 2)
 
 # Calculate sumamry statistics for each group: TA, SEA and SEAc
 group.ML <- groupMetricsML(siber.example)

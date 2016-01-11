@@ -4,91 +4,152 @@
 rm(list = ls())
 graphics.off()
 
-library(siar)
+library(SIBER)
 
-# ------------------------------------------------------------------------------
-# ANDREW - REMOVE THESE LINES WHICH SHOULD BE REDUNDANT
-# change this line
-#setwd("c:/rtemp")
-# ------------------------------------------------------------------------------
+# optionally load the viridis colour package
+library(viridis)
 
+# and if loaded, designate a new colour palette of length = 4
+palette(viridis(4))
 
+# -----------------------------------------------------------------
 
-# read in some data
-mydata <- read.csv("example_layman_data_2.csv", header=T)
+# read in data from the current working directory
+mydata <- read.csv("example_layman_data_all.csv", 
+                   header = TRUE)
 
-# calculate the Bayesian Layman metrics given data for Isotopes 1 and 2, 
-# a grouping variable group and a number of iterations to use to generate
-# the results
-metrics <- siber.hull.metrics(mydata$x, mydata$y, mydata$group, R=10^4)
+# create the siber object
+siber.example <- createSiberObject(mydata)
 
+# -----------------------------------------------------------------
+# Plot the raw data
+# -----------------------------------------------------------------
 
+# Create lists of plotting arguments to be passed onwards to each 
+# of the three plotting functions.
+community.hulls.args <- list(col = 1, lty = 1, lwd = 1)
+group.ellipses.args  <- list(n = 100, p.interval = 0.95, lty = 1, lwd = 2)
+group.hull.args      <- list(lty = 2, col = "grey20")
 
-
-# ------------------------------------------------------------------------------
-# Plot out some of the data and results
-# ------------------------------------------------------------------------------
-
-# Plot the raw [simulated in this case] data
-
-# these are the names of each of the metrics taken from the fitted model
-xlabels <- attributes(metrics)$dimnames[[2]]
-
-# Now lets calculate the convex hull as per the current method based
-# simply on the means for each group
-means.x <- aggregate(mydata$x,list(mydata$group),mean)$x
-means.y <- aggregate(mydata$y,list(mydata$group),mean)$x
-sample.hull <- convexhull(means.x,means.y)
-
-# get the 6 layman metrics based on the means of each group, i.e. the Maximum
-# Likelihood estimates
-ML.layman <- laymanmetrics(means.x, means.y)
-
-# knowing how many groups we have is useful for constraining the plot 
-M <- max(mydata$group)
-
-#dev.new()
+# plot the raw data
 par(mfrow=c(1,1))
-plot(mydata$x, mydata$y,
-     col = mydata$group,
-     xlab = "Isotope 1",
-     ylab = "Isotope 2",
-     pch = 1, asp=1, 
-     xlim = c( min(mydata$x)-2, max(mydata$x)+2), 
-     ylim = c( min(mydata$y)-2, max(mydata$y)+2)
-     )
+plotSiberObject(siber.example,
+                ax.pad = 2, 
+                hulls = T, community.hulls.args, 
+                ellipses = F, group.ellipses.args,
+                group.hulls = F, group.hull.args,
+                bty = "L",
+                iso.order = c(1,2),
+                xlab = expression({delta}^13*C~'\u2030'),
+                ylab = expression({delta}^15*N~'\u2030')
+)
 
-lines(sample.hull$xcoords, sample.hull$ycoords, lty = 1, col = 1, lwd = 2)
+# add the confidence interval of the means to help locate
+# the centre of each data cluster
+plotGroupEllipses(siber.example, n = 100, p.interval = 0.95,
+                  ci.mean = T, lty = 1, lwd = 2)
 
-legend("topleft",
-  legend = as.character(c(paste("group ",1:M),"sample hull")),
-  pch = c(rep(1,M),NA), col = c(1:M,1,1), lty = c(rep(NA,M),1),
-  bty = "n")
 
-# in this example, I plot TA as a histogram seperately to the other
-# metrics as it is usually on a scale so vastly different from the other 
-# metrics.
-#dev.new()
-par(mfrow = c(1,2))
 
-hist(metrics[,"TA"], freq = F, xlab = "TA", ylab = "Density", main="")
+# -----------------------------------------------------------------
+# Fit the Bayesian models
+# -----------------------------------------------------------------
 
-# add a vertical line indicating the TA based on the sample means
-# but you may not want this.
-abline(v = ML.layman$hull$TA, col = "red", lwd = 2, lty = 2)
+# options for running jags
+parms <- list()
+parms$n.iter <- 2 * 10^4   # number of iterations to run the model for
+parms$n.burnin <- 1 * 10^3 # discard the first set of values
+parms$n.thin <- 10     # thin the posterior by this many
+parms$n.chains <- 2        # run this many chains
 
-# -------------------------------------
-siardensityplot(metrics[,c(1,2,4,5,6)],
-                xticklabels = xlabels[c(1,2,4,5,6)],
-                ylims = c(0,25),
-                ylab = expression('\u2030'),
-                xlab = "Metric")
+# define the priors
+priors <- list()
+priors$R <- 1 * diag(2)
+priors$k <- 2
+priors$tau.mu <- 1.0E-3
 
-# this is a bit hardcoded, but basically it converts the contents of 
-# ML.layman metrics from a list into a vector, and then pulls out the
-# appropriate entries corresponding to the right metrics... i just looked this
-# up and counted in to find the correct entry numbers... hardly elegant.
-# But you may not want this... its just reasssuring to see they match.
-points(1:5, unlist(ML.layman)[c(1,2,19,20,21)], col = "red", pch = "x")
+# fit the ellipses which uses an Inverse Wishart prior
+# on the covariance matrix Sigma, and a vague normal prior on the 
+# means. Fitting is via the JAGS method.
+ellipses.posterior <- siberMVN(siber.example, parms, priors)
+
+# -----------------------------------------------------------------
+# Calculate the layman metrics on these posteriors
+# -----------------------------------------------------------------
+
+# extract the posterior means
+mu.post <- extractPosteriorMeans(siber.example, ellipses.posterior)
+
+# calculate the corresponding distribution of layman metrics
+layman.B <- bayesianLayman(mu.post)
+
+
+# --------------------------------------
+# Visualise the first community
+# --------------------------------------
+
+# drop the 3rd column of the posterior which is TA using -3.
+siberDensityPlot(layman.B[[1]][ , -3], 
+                 xticklabels = colnames(layman.B[[1]][ , -3]), 
+                 bty="L", ylim = c(0,20))
+
+# add the ML estimates (if you want). Extract the correct means 
+# from the appropriate array held within the overall array of means.
+comm1.layman.ml <- laymanMetrics(siber.example$ML.mu[[1]][1,1,],
+                                 siber.example$ML.mu[[1]][1,2,]
+)
+
+# again drop the 3rd entry which relates to TA
+points(1:5, comm1.layman.ml$metrics[-3], 
+       col = "red", pch = "x", lwd = 2)
+
+
+# --------------------------------------
+# Visualise the second community
+# --------------------------------------
+siberDensityPlot(layman.B[[2]][ , -3], 
+                 xticklabels = colnames(layman.B[[2]][ , -3]), 
+                 bty="L", ylim = c(0,20))
+
+# add the ML estimates. (if you want) Extract the correct means 
+# from the appropriate array held within the overall array of means.
+comm2.layman.ml <- laymanMetrics(siber.example$ML.mu[[2]][1,1,],
+                                 siber.example$ML.mu[[2]][1,2,]
+)
+points(1:5, comm2.layman.ml$metrics[-3], 
+       col = "red", pch = "x", lwd = 2)
+
+
+# ------------------------------------------
+# Plot both TAs from each community together
+# ------------------------------------------
+
+# go back to a 1x1 panel plot
+par(mfrow=c(1,1))
+
+# Now we only plot the TA data. We could address this as either
+# layman.B[[1]][, "TA"]
+# or
+# layman.B[[1]][, 3]
+siberDensityPlot(cbind(layman.B[[1]][ , "TA"], 
+                       layman.B[[2]][ , "TA"]),
+                 xticklabels = c("Community 1", "Community 2"), 
+                 bty="L", ylim = c(0, 90),
+                 las = 1,
+                 ylab = "TA - Convex Hull Area",
+                 xlab = "")
+
+# ------------------------------------------
+# Calcualte the probability that dN-range for 
+# community 1 is less than that for 
+# community 2
+# ------------------------------------------
+
+dNr1.lt.dNr2 <- sum(layman.B[[1]][,"dY_range"] < 
+                      layman.B[[2]][,"dY_range"]) / 
+  length(layman.B[[1]][,"TA"])
+
+print(dNr1.lt.dNr2)
+
 
 
