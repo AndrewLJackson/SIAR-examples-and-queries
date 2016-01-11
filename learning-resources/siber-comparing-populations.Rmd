@@ -7,14 +7,39 @@ output: html_document
 
 ```{r, echo=FALSE, message = FALSE, fig.width = 7, fig.height = 7}
 
-library(siar, quietly = TRUE,
+library(SIBER, quietly = TRUE,
         verbose = FALSE,
         logical.return = FALSE)
 
-source("plot.siber.data.r")
+library(viridis)
+palette(viridis(4))
 
-M <- plot.siber.data("../siber-scripts/example_layman_data.csv",
-                tt = "Community 1", add.hull = F)
+# read in the data
+mydata <- read.csv("../siber-scripts/example_layman_data.csv",
+                   header=T)
+
+# create the siber object
+siber.example <- createSiberObject(mydata)
+
+# Create lists of plotting arguments to be passed onwards to each 
+# of the three plotting functions.
+community.hulls.args <- list(col = 1, lty = 1, lwd = 1)
+group.ellipses.args  <- list(n = 100, p.interval = 0.95, lty = 1, lwd = 2)
+group.hull.args      <- list(lty = 2, col = "grey20")
+
+# plot the raw data
+par(mfrow=c(1,1))
+plotSiberObject(siber.example,
+                  ax.pad = 2, 
+                  hulls = F, community.hulls.args, 
+                  ellipses = F, group.ellipses.args,
+                  group.hulls = F, group.hull.args,
+                  bty = "L",
+                  iso.order = c(1,2),
+                  xlab = expression({delta}^13*C~'\u2030'),
+                  ylab = expression({delta}^15*N~'\u2030')
+                  )
+
 ```
 
 In this figure, we have 4 populations (or more generically: groups) of indivuals. We might want to make some comparisons of the isotopic (and hence ecological) niches occupied by these individuals. The two most obvious ways to compare two of these populations, is to ask whether their niches are located in the same place, and if they are the same size. Thereafter, we may be interested in asking to what extent do their niches overlap.
@@ -23,10 +48,10 @@ We can visualise this by adding both ellipses, and convex hulls to the data. In 
 
 In contrast, the convex hull is a polygon that is drawn around the outermost points in the cloud of data such that all other points lie within the outline. If we were to go out and collect more samples, then this hull can only grow in size and not get smaller. The result of this is that smaller sample sizes will result in smaller convex hulls. Despite this statistical problem, the convex hull remains a useful way to help us visualise bivariate data such as carbon-nitrogen stable isotope values.
 
-We can then go back to our community comprising 4 populations, and add standard ellipses and convex hulls to each group by first splitting the data into 4 groups, and then looping over these 4 groups and applying the ellipse and hull plotting instructions to each group, one at a time. This code is taken from the script (demo.SEA.r)[../siber-scripts/demo.SEA.r] which you can open seprately, or you can copy and paste from below (although you will need to alter the location of the data file in the opening code:
+We can then go back to our community comprising 4 populations, and add standard ellipses and convex hulls to each group. The new code in SIBER creates a special object that contains the original data, the rescaled and z-scored data, along with various summary statistics to aid with plotting and model fitting. Most of this happens in the background, so you dont need to worry about the details of this object unless you want to delve deeper.
 
 ``` r
-mydata<-read.csv("path/example_ellipse_data.csv"))
+mydata<-read.csv("path/example_layman_data.csv"))
 ```
 
 And now the full code...
@@ -36,120 +61,51 @@ And now the full code...
 rm(list = ls()) # clear the memory of objects
 
 # load the siar package of functions
-library(siar)
+library(SIBER)
 
-# ------------------------------------------------------------------------------
-# ANDREW - REMOVE THESE LINES WHICH SHOULD BE REDUNDANT
-# change this line
-#setwd("c:/rtemp")
-#setwd("/Users/andrewjackson/Dropbox/siar/demo scripts and files/siber scripts")
-#setwd( "D:/Alternative My Documents/Andrews Documents/Dropbox/siar/demo scripts and files/siber scripts")
-# ------------------------------------------------------------------------------
+# read in the data
+mydata <- read.csv("../siber-scripts/example_layman_data.csv",
+                   header=T)
 
+# create the siber object
+siber.example <- createSiberObject(mydata)
 
-
-# now close all currently open windows
-# graphics.off()
-
-
-# read in some data
-# NB the column names have to be exactly, "group", "x", "y"
-mydata <- read.csv("../siber-scripts/example_layman_data.csv",header=T)
-
-# make the column names availble for direct calling
-# attach(mydata)
-# NB I am phasing out use of the attach() function, and instead
-# prefer to directly reference columns within data.frame objects
-# by using, mydata$x, mydata$y and mydata$group etc...
+# Create lists of plotting arguments to be passed onwards to each 
+# of the three plotting functions.
+community.hulls.args <- list(col = 1, lty = 1, lwd = 1)
+group.ellipses.args  <- list(n = 100, p.interval = 0.95, 
+                             lty = 1, lwd = 2)
+group.hull.args      <- list(lty = 2, col = "grey20")
 
 
-# now loop through the data and calculate the ellipses
-ngroups <- length(unique(mydata$group))
+# ellipses and group.hulls are set to TRUE or T for short to force
+# their plotting. 
+par(mfrow=c(1,1))
+plotSiberObject(siber.example,
+                  ax.pad = 2, 
+                  hulls = F, community.hulls.args, 
+                  ellipses = T, group.ellipses.args,
+                  group.hulls = T, group.hull.args,
+                  bty = "L",
+                  iso.order = c(1,2),
+                  xlab = expression({delta}^13*C~'\u2030'),
+                  ylab = expression({delta}^15*N~'\u2030')
+                  )
 
+# You can add more ellipses by directly calling plot.group.ellipses()
+# Add an additional p.interval % prediction ellilpse
+plotGroupEllipses(siber.example, n = 100, p.interval = 0.95,
+                    lty = 1, lwd = 2)
 
+# or you can add the XX% confidence interval around the bivariate means
+# by specifying ci.mean = T along with whatever p.interval you want.
+plotGroupEllipses(siber.example, n = 100, p.interval = 0.95, ci.mean = T,
+                    lty = 1, lwd = 2)
 
-# split the isotope data based on group
-spx <- split(mydata$x, mydata$group)
-spy <- split(mydata$y, mydata$group)
+# Calculate sumamry statistics for each group: TA, SEA and SEAc
+group.ML <- groupMetricsML(siber.example)
+print(group.ML)
 
-# create some empty vectors for recording our metrics
-SEA <- numeric(ngroups)
-SEAc <- numeric(ngroups)
-TA <- numeric(ngroups)
-
-#dev.new()
-plot(mydata$x, mydata$y, col=mydata$group, type="p",
-     xlab=expression({delta}^13*C~'\u2030'),
-     ylab=expression({delta}^15*N~'\u2030'))
-
-legend("topright",
-       legend = as.character(paste("Group ",unique(mydata$group))),
-       pch = 19,
-       col = 1:length(unique(mydata$group)))
-
-# a dataframe for collecting the 6 layman metrics, although see
-# my note below for caveats.
-group.layman.metrics <- data.frame(group = unique(mydata$group),
-                                  dN_range = double(ngroups),
-                                  dC_range = double(ngroups),
-                                  TA = double(ngroups),
-                                  CD = double(ngroups),
-                                  MNND = double(ngroups),
-                                  SDNND = double(ngroups)
-                                  )
-
-for (j in unique(mydata$group)){
-
-
-  # Fit a standard ellipse to the data
-  SE <- standard.ellipse(spx[[j]],spy[[j]],steps=1)
-  
-  # Extract the estimated SEA and SEAc from this object
-  SEA[j] <- SE$SEA
-  SEAc[j] <- SE$SEAc
-  
-  # plot the standard ellipse with d.f. = 2 (i.e. SEAc)
-  # These are plotted here as thick solid lines
-  lines(SE$xSEAc,SE$ySEAc,col=j,lty=1,lwd=3)
-  
-  
-  # Also, for comparison we can fit and plot the convex hull
-  # the convex hull is plotted as dotted thin lines
-  #
-  # Calculate the convex hull for the jth group's isotope values
-  # held in the objects created using split() called spx and spy
-  CH <- convexhull(spx[[j]],spy[[j]])
-  
-  # Extract the area of the convex hull from this object
-  TA[j] <- CH$TA
-  
-  # Plot the convex hull
-  lines(CH$xcoords,CH$ycoords,lwd=1,lty=3)
-
-  # you can if you want also calculate the 6 layman metrics
-  # for this group, although I do not recommned making quantiative
-  # comparisons owing to the sample size bias and uncertainties
-  # illustrated in my SIBER paper. This is after all why we are 
-  # fitting ellipses to our data in this script!
-  
-  tmp <- laymanmetrics(spx[[j]],spy[[j]])
-  
-  group.layman.metrics[j,2:7] <- c(tmp$dN_range,
-                                   tmp$dC_range,
-                                   tmp$hull$TA,
-                                   tmp$CD,
-                                   tmp$MNND,
-                                   tmp$SDNND)
-  
-}
-
-# print the area metrics to screen for comparison
-# NB if you are working with real data rather than simulated then you wont be
-# able to calculate the population SEA (pop.SEA)
-# If you do this enough times or for enough groups you will easily see the
-# bias in SEA as an estimate of pop.SEA as compared to SEAc which is unbiased.
-# Both measures are equally variable.
-print(cbind(SEA,SEAc,TA))
 ```
 
 ***
@@ -157,40 +113,76 @@ print(cbind(SEA,SEAc,TA))
 ## Using Bayesian Inference to calculate uncertainty around ellipses
 So far these still just point-metrics that describe the width of the isotopic niche. That is, they are single numbers for each group, which means that we can't compare one group to another in a statisical sense as we lack a measure of the uncertainty around each estimate. This is where we can use Bayesian Inference to quantify the error associated with fitting these ellipses to each group, that arises from both the number of samples we have, and also their distribution.
 
-Essentially, what the MCMC algorithm does is generate a distribution of covariance matrices that to a greater or lesser extent (in terms of likelihood) describe the observed data. It does so, as is the general case in Bayesian INference, by combing the prior probability with the likelihood of the data for a given covariance matrix.
+Essentially, what the MCMC algorithm does is generate a distribution of covariance matrices that to a greater or lesser extent (in terms of likelihood) describe the observed data. It does so, as is the general case in Bayesian Inference, by combing the prior probability with the likelihood of the data for a given covariance matrix.
 
-What we end up with is a range of ellipses that could explain the data, with more of them clustered around the most likely solution. However, one cannot simply take an average across these covariance matrices, as there are strict mathematical properties that must be maintained. The result of this is that it is not possible to plot a mean, median or modal Bayesian Standard Ellipse; instead we must calculate each one of the ellipse's area, and then present summary statistics of this derived measurement.
+SIBER uses the jags package to fit the Bayesian model and so we need to specify the parameters of the simulation run, including: run length, burn-in period, number of chains etc...
+
+```{r}
+
+# options for running jags
+parms <- list()
+parms$n.iter <- 2 * 10^4   # number of iterations to run the model for
+parms$n.burnin <- 1 * 10^3 # discard the first set of values
+parms$n.thin <- 10     # thin the posterior by this many
+parms$n.chains <- 2        # run this many chains
+
+# define the priors
+priors <- list()
+priors$R <- 1 * diag(2)
+priors$k <- 2
+priors$tau.mu <- 1.0E-3
+
+# fit the ellipses which uses an Inverse Wishart prior
+# on the covariance matrix Sigma, and a vague normal prior on the 
+# means. Fitting is via the JAGS method.
+ellipses.posterior <- siberMVN(siber.example, parms, priors)
+
+```
+
+What we end up with is a range of ellipses that could explain the data, with more of them clustered around the most likely solution. However, one cannot simply take an average across these covariance matrices, as there are strict mathematical properties that must be maintained. The result of this is that it is not possible to plot a mean, median or modal Bayesian Standard Ellipse; instead we must calculate each one of the ellipse's area, and then present summary statistics of this derived measurement. SIBER contains a function that will automatically loop over all the groups and do this.
 
 The plots below represent the posterior distribution of the SEA_B fitted to each of the 4 groups in our dataset.
 
 ```{r, fig.width = 8, fig.height = 6}
-# So far we have fitted the standard ellipses based on frequentist methods
-# and calculated the relevant metrics (SEA and SEAc). Now we turn our attention
-# to producing a Bayesian estimate of the standard ellipse and its area SEA_B
-
-
-reps <- 10^4 # the number of posterior draws to make
-
-# Generate the Bayesian estimates for the SEA for each group using the 
-# utility function siber.ellipses
-SEA.B <- siber.ellipses(mydata$x, mydata$y, mydata$group, R = reps)
-
-# ------------------------------------------------------------------------------
+# 
+# ----------------------------------------------------------------
 # Plot out some of the data and results
-# ------------------------------------------------------------------------------
+# ----------------------------------------------------------------
 
+# The posterior estimates of the ellipses for each group can be used to
+# calculate the SEA.B for each group.
+SEA.B <- siberEllipses(ellipses.posterior)
 
-# Plot the credible intervals for the estimated ellipse areas now
-# stored in the matrix SEA.B
-#dev.new()
-siardensityplot(SEA.B,
-  xlab="Group",ylab="Area (permil^2)",
-  main="Bayesian Standard Ellipse Area (SEA_B)")
+siberDensityPlot(SEA.B, xticklabels = colnames(group.ML), 
+                xlab = c("Community | Group"),
+                ylab = expression("Standard Ellipse Area " ('\u2030' ^2) ),
+                bty = "L",
+                las = 1,
+                main = "SIBER ellipses on each group"
+                )
 
-# and now overlay the other metrics on teh same plot for comparison
-points(1:ngroups, SEAc, pch = 15, col = "red")
-legend("topright", c("SEAc"),
-       pch = c(15, 17), col = c("red", "blue"))
+# Add red x's for the ML estimated SEA-c
+points(1:ncol(SEA.B), group.ML[3,], col="red", pch = "x", lwd = 2)
+
+# Calculate some credible intervals 
+cr.p <- c(0.95, 0.99) # vector of quantiles
+
+# call to hdrcde:hdr using lapply()
+SEA.B.credibles <- lapply(
+  as.data.frame(SEA.B), 
+  function(x,...){tmp<-hdrcde::hdr(x)$hdr},
+  prob = cr.p)
+
+print(SEA.B.credibles)
+
+# do similar to get the modes, taking care to pick up multimodal posterior
+# distributions if present
+SEA.B.modes <- lapply(
+  as.data.frame(SEA.B), 
+  function(x,...){tmp<-hdrcde::hdr(x)$mode},
+  prob = cr.p, all.modes=T)
+
+print(SEA.B.modes)
 ```
 
 ***
@@ -237,7 +229,19 @@ One can calculate the overlap between two (or more) ellipses. In the first insta
 The overlap between the SEAc for groups 2 and 3 is given by:
 
 ```{r}
-overlap.G2.G3 <- overlap(spx[[2]], spy[[2]], 
+# We have to go back to the original data and split the isotope
+# data based on the group identifier. NB, this bit of code wont
+# work if you also have multiple communities. For now...
+spx <- split(siber.example$original.data$iso1, 
+             siber.example$original.data$group)
+spy <- split(siber.example$original.data$iso2,
+             siber.example$original.data$group)
+
+# The overlap function still lives in the siar package so we 
+# have to load that here to acheive this.
+library(siar)
+
+overlap.G2.G3 <- overlap(as.numeric(spx[[2]]), spy[[2]], 
                          spx[[3]], spy[[3]],
                          steps = 1)
 print(overlap.G2.G3)
