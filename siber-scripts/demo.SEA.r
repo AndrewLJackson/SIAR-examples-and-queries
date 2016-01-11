@@ -1,7 +1,15 @@
 rm(list = ls()) # clear the memory of objects
 
-# load the siar package of functions
-library(siar)
+# load the SIBER package of functions
+library(SIBER)
+
+# Optionally load the viridis package for colour-blind and 
+# print-friendly colour palettes
+library(viridis)
+
+# create a palette of 4 colours. NB needs to be changed if you 
+# have more than 4 groups.
+palette(viridis(4))
 
 # ------------------------------------------------------------------------------
 # ANDREW - REMOVE THESE LINES WHICH SHOULD BE REDUNDANT
@@ -11,216 +19,181 @@ library(siar)
 #setwd( "D:/Alternative My Documents/Andrews Documents/Dropbox/siar/demo scripts and files/siber scripts")
 # ------------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------
+# Read in the data and set up for analysis
+# ---------------------------------------------------------------------
 
 
-# now close all currently open windows
-graphics.off()
+# read in the data
+mydata <- read.csv("../siber-scripts/example_layman_data.csv",
+                   header=T)
+
+# create the siber object
+siber.example <- createSiberObject(mydata)
+
+# ---------------------------------------------------------------------
+# Plot the raw data and generate summary statistics
+# ---------------------------------------------------------------------
 
 
-# read in some data
-# NB the column names have to be exactly, "group", "x", "y"
-mydata <- read.csv("example_layman_data.csv",header=T)
-
-# make the column names availble for direct calling
-# attach(mydata)
-# NB I am phasing out use of the attach() function, and instead
-# prefer to directly reference columns within data.frame objects
-# by using, mydata$x, mydata$y and mydata$group etc...
+# Create lists of plotting arguments to be passed onwards to each 
+# of the three plotting functions.
+community.hulls.args <- list(col = 1, lty = 1, lwd = 1)
+group.ellipses.args  <- list(n = 100, p.interval = 0.95, 
+                             lty = 1, lwd = 2)
+group.hull.args      <- list(lty = 2, col = "grey20")
 
 
-# now loop through the data and calculate the ellipses
-ngroups <- length(unique(mydata$group))
+# ellipses and group.hulls are set to TRUE or T for short to force
+# their plotting. 
+par(mfrow=c(1,1))
+plotSiberObject(siber.example,
+                ax.pad = 2, 
+                hulls = F, community.hulls.args, 
+                ellipses = T, group.ellipses.args,
+                group.hulls = T, group.hull.args,
+                bty = "L",
+                iso.order = c(1,2),
+                xlab = expression({delta}^13*C~'\u2030'),
+                ylab = expression({delta}^15*N~'\u2030')
+)
+
+# You can add more ellipses by directly calling plot.group.ellipses()
+# Add an additional p.interval % prediction ellilpse
+plotGroupEllipses(siber.example, n = 100, p.interval = 0.95,
+                  lty = 1, lwd = 2)
+
+# or you can add the XX% confidence interval around the bivariate means
+# by specifying ci.mean = T along with whatever p.interval you want.
+plotGroupEllipses(siber.example, n = 100, p.interval = 0.95, ci.mean = T,
+                  lty = 1, lwd = 2)
+
+# Calculate sumamry statistics for each group: TA, SEA and SEAc
+group.ML <- groupMetricsML(siber.example)
+print(group.ML)
 
 
+# ---------------------------------------------------------------------
+# FIT THE BAYESIAN MULTIVARIATE MODEL TO EACH GROUP
+# ---------------------------------------------------------------------
 
-# split the isotope data based on group
-spx <- split(mydata$x, mydata$group)
-spy <- split(mydata$y, mydata$group)
+# options for running jags
+parms <- list()
+parms$n.iter <- 2 * 10^4   # number of iterations to run the model for
+parms$n.burnin <- 1 * 10^3 # discard the first set of values
+parms$n.thin <- 10     # thin the posterior by this many
+parms$n.chains <- 2        # run this many chains
 
-# create some empty vectors for recording our metrics
-SEA <- numeric(ngroups)
-SEAc <- numeric(ngroups)
-TA <- numeric(ngroups)
+# define the priors
+priors <- list()
+priors$R <- 1 * diag(2)
+priors$k <- 2
+priors$tau.mu <- 1.0E-3
 
-#dev.new()
-plot(mydata$x, mydata$y, col=mydata$group, type="p",
-     xlab=expression({delta}^13*C~'\u2030'),
-     ylab=expression({delta}^15*N~'\u2030'))
+# fit the ellipses which uses an Inverse Wishart prior
+# on the covariance matrix Sigma, and a vague normal prior on the 
+# means. Fitting is via the JAGS method.
+ellipses.posterior <- siberMVN(siber.example, parms, priors)
 
-legend("topright",
-       legend = as.character(paste("Group ",unique(mydata$group))),
-       pch = 19,
-       col = 1:length(unique(mydata$group)))
-
-# a dataframe for collecting the 6 layman metrics, although see
-# my note below for caveats.
-group.layman.metrics <- data.frame(group = unique(mydata$group),
-                                  dN_range = double(ngroups),
-                                  dC_range = double(ngroups),
-                                  TA = double(ngroups),
-                                  CD = double(ngroups),
-                                  MNND = double(ngroups),
-                                  SDNND = double(ngroups)
-                                  )
-
-for (j in unique(mydata$group)){
+# ---------------------------------------------------------------------
+# Calculate and Plot the Bayesian Ellipses
+# ---------------------------------------------------------------------
 
 
-  # Fit a standard ellipse to the data
-  SE <- standard.ellipse(spx[[j]],spy[[j]],steps=1)
-  
-  # Extract the estimated SEA and SEAc from this object
-  SEA[j] <- SE$SEA
-  SEAc[j] <- SE$SEAc
-  
-  # plot the standard ellipse with d.f. = 2 (i.e. SEAc)
-  # These are plotted here as thick solid lines
-  lines(SE$xSEAc,SE$ySEAc,col=j,lty=1,lwd=3)
-  
-  
-  # Also, for comparison we can fit and plot the convex hull
-  # the convex hull is plotted as dotted thin lines
-  #
-  # Calculate the convex hull for the jth group's isotope values
-  # held in the objects created using split() called spx and spy
-  CH <- convexhull(spx[[j]],spy[[j]])
-  
-  # Extract the area of the convex hull from this object
-  TA[j] <- CH$TA
-  
-  # Plot the convex hull
-  lines(CH$xcoords,CH$ycoords,lwd=1,lty=3)
+# The posterior estimates of the ellipses for each group can be used to
+# calculate the SEA.B for each group.
+SEA.B <- siberEllipses(ellipses.posterior)
 
-  # you can if you want also calculate the 6 layman metrics
-  # for this group, although I do not recommned making quantiative
-  # comparisons owing to the sample size bias and uncertainties
-  # illustrated in my SIBER paper. This is after all why we are 
-  # fitting ellipses to our data in this script!
-  
-  tmp <- laymanmetrics(spx[[j]],spy[[j]])
-  
-  group.layman.metrics[j,2:7] <- c(tmp$dN_range,
-                                   tmp$dC_range,
-                                   tmp$hull$TA,
-                                   tmp$CD,
-                                   tmp$MNND,
-                                   tmp$SDNND)
-  
-}
+siberDensityPlot(SEA.B, xticklabels = colnames(group.ML), 
+                 xlab = c("Community | Group"),
+                 ylab = expression("Standard Ellipse Area " ('\u2030' ^2) ),
+                 bty = "L",
+                 las = 1,
+                 main = "SIBER ellipses on each group"
+)
 
-# print the area metrics to screen for comparison
-# NB if you are working with real data rather than simulated then you wont be
-# able to calculate the population SEA (pop.SEA)
-# If you do this enough times or for enough groups you will easily see the
-# bias in SEA as an estimate of pop.SEA as compared to SEAc which is unbiased.
-# Both measures are equally variable.
-print(cbind(SEA,SEAc,TA))
+# Add red x's for the ML estimated SEA-c
+points(1:ncol(SEA.B), group.ML[3,], col="red", pch = "x", lwd = 2)
 
-# So far we have fitted the standard ellipses based on frequentist methods
-# and calculated the relevant metrics (SEA and SEAc). Now we turn our attention
-# to producing a Bayesian estimate of the standard ellipse and its area SEA_B
+# Calculate some credible intervals 
+cr.p <- c(0.95, 0.99) # vector of quantiles
+
+# call to hdrcde:hdr using lapply()
+SEA.B.credibles <- lapply(
+  as.data.frame(SEA.B), 
+  function(x,...){tmp<-hdrcde::hdr(x)$hdr},
+  prob = cr.p)
+
+print(SEA.B.credibles)
+
+# do similar to get the modes, taking care to pick up multimodal posterior
+# distributions if present
+SEA.B.modes <- lapply(
+  as.data.frame(SEA.B), 
+  function(x,...){tmp<-hdrcde::hdr(x)$mode},
+  prob = cr.p, all.modes=T)
+
+print(SEA.B.modes)
 
 
-reps <- 10^4 # the number of posterior draws to make
-
-# Generate the Bayesian estimates for the SEA for each group using the 
-# utility function siber.ellipses
-SEA.B <- siber.ellipses(mydata$x, mydata$y, mydata$group, R = reps)
-
-# ------------------------------------------------------------------------------
-# Plot out some of the data and results
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
+# Compare the posterior distributions of SEA
+# ---------------------------------------------------------------------
 
 
-# Plot the credible intervals for the estimated ellipse areas now
-# stored in the matrix SEA.B
-#dev.new()
-siardensityplot(SEA.B,
-  xlab="Group",ylab="Area (permil^2)",
-  main="Different estimates of Standard Ellipse Area (SEA)")
-
-# and now overlay the other metrics on teh same plot for comparison
-points(1:ngroups, SEAc, pch = 15, col = "red")
-legend("topright", c("SEAc"),
-       pch = c(15, 17), col = c("red", "blue"))
-
-# ------------------------------------------------------------------------------
-# Compare two ellipses for significant differences in SEA
-# ------------------------------------------------------------------------------
-
-
-# to test whether Group 1 SEA is smaller than Group 2...
-# you need to calculate the proportion of G1 ellipses that are less 
-# than G2
-
+# Proportion, and hence probability that the SEA for Group 1
+# is less than that for Group 2
 Pg1.lt.g2 <- sum( SEA.B[,1] < SEA.B[,2] ) / nrow(SEA.B)
+print(Pg1.lt.g2)
 
-# In this case, all the posterior ellipses for G1 are less than G2 so 
-# we can conclude that G1 is smaller than G2 with p approx = 0, and 
-# certainly p < 0.0001.
-
-# and for G1 < G3
+# Compare Group 1 and 3 similarly
 Pg1.lt.g3 <- sum( SEA.B[,1] < SEA.B[,3] ) / nrow(SEA.B)
+print(Pg1.lt.g3 )
 
-# etc...
+# And the remaining pair-wise comparisons
+Pg1.lt.g4 <- sum( SEA.B[,1] < SEA.B[,4] ) / nrow(SEA.B)
+print(Pg1.lt.g4)
+
 Pg2.lt.g3 <- sum( SEA.B[,2] < SEA.B[,3] ) / nrow(SEA.B)
+print(Pg2.lt.g3)
 
 Pg3.lt.g4 <- sum( SEA.B[,3] < SEA.B[,4] ) / nrow(SEA.B)
-
-# An alternative approach is to calulate the effect size. That is, the 
-# difference in size between the two ellipses. If this difference is close 
-# to zero, then there is little differnce, and if it is far away from zero 
-# then the effect size is large. Again, this difference is a distribution.
-
-diff.g1.g2 <- SEA.B[,1] - SEA.B[,2]
-diff.g3.g4 <- SEA.B[,3] - SEA.B[,4]
-                                
-# plot a histogram of this difference
-hist(diff.g1.g2, 50)
-abline(v = 0, col = 'red') # add a vertical line at zero
-
-# plot a histogram of this difference
-hist(diff.g3.g4, 50)
-abline(v = 0, col = 'red') # add a vertical line at zero
+print(Pg3.lt.g4)
 
 
-# ------------------------------------------------------------------------------
-# To calculate the overlap between two ellipses you can use the following code
-# NB: the degree of overlap is sensitive to the size of ellipse you 
-# choose to draw around each group of data. However, regardless of the choice
-# of ellipse, the extent of overlap will range from 0 to 1, with values closer
-# to 1 representing more overlap. So, at worst it is a semi-quantitative 
-# measure regardless of extent of the ellipse, but the finer detials and 
-# magnitudes of the effect size will be sensitive to this choice.
-#
-# Additional coding will be required if you wish to calculate the overlap 
-# between ellipses other than those described by SEA or SEAc. 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
+# Calculate overlap between pairs of ellipses
+# ---------------------------------------------------------------------
 
-# The overlap between the SEAc for groups 1 and 3 is given by:
+# We have to go back to the original data and split the isotope
+# data based on the group identifier. NB, this bit of code wont
+# work if you also have multiple communities. For now...
+spx <- split(siber.example$original.data$iso1, 
+             siber.example$original.data$group)
+spy <- split(siber.example$original.data$iso2,
+             siber.example$original.data$group)
 
-# Fit a standard ellipse to the data
-# NB, I use a small step size to make sure i get more "round" ellipses,
-# as this method is computatonal and based on the discretisation of the
-# ellipse boundaries.
+# The overlap function still lives in the siar package so we 
+# have to load that here to acheive this.
+library(siar)
 
-overlap.G1.G3 <- overlap(spx[[1]],spy[[1]],spx[[3]],spy[[3]],steps=1)
+overlap.G2.G3 <- overlap(as.numeric(spx[[2]]), spy[[2]], 
+                         spx[[3]], spy[[3]],
+                         steps = 1)
+print(overlap.G2.G3)
 
-#-------------------------------------------------------------------------------
-# you can also cacluate the overlap between two of the convex hulls,
-# or indeed any polygon using the code that underlies the overlap() function.
+# You might want to present a proportion overlap: and you have some 
+# options...
 
-# fit a hull to the Group 1 data
-hullG1 <- convexhull(spx[[1]],spy[[1]])
+# Area of overlap between group 2 and 3 as a proportion of the size
+# of ellipse for group 2
+overlap.G2.G3$overlap / overlap.G2.G3$area1
 
-# create a list object of the unique xy coordinates of the hull
-# the first and last entries are coincident for plotting, so ignore the first...
-# hence the code to subset [2:length(hullG1$xcoords)] 
-h1 <- list( x = hullG1$xcoords[2:length(hullG1$xcoords)] , y = hullG1$ycoords[2:length(hullG1$xcoords)] )
+# Area of overlap between group 2 and 3 as a proportion of the size
+# of ellipse for group 3
+overlap.G2.G3$overlap / overlap.G2.G3$area2
 
-# Do the same for the Group 3 data
-hullG3 <- convexhull(spx[[3]],spy[[3]])
-h3 <- list( x = hullG3$xcoords[2:length(hullG3$xcoords)] , y = hullG3$ycoords[2:length(hullG3$xcoords)] )
+# Area of overlap between group 2 and 3 as a proportion of the size
+# of both ellipses for group 2 and 3.
+overlap.G2.G3$overlap / (overlap.G2.G3$area1 + overlap.G2.G3$area2)
 
-# and calculate the overlap using the function in spatstat package.
-hull.overlap.G1.G3 <- overlap.xypolygon(h1,h3)
