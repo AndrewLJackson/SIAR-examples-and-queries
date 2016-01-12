@@ -29,6 +29,8 @@ In the folders `/podcasts/basic-analyses/` and `/podcasts/genearlised-linear-mod
 
 ## Run basic SIMM in JAGS
 
+Turning now to Andrew Parnell's files in his folder of content you downloaded:
+
 - copy R code from
   - `library(rjags)`
   - `library(siar)`
