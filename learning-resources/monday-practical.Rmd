@@ -1,5 +1,5 @@
 ---
-title: "monday-practical"
+title: "First-practical"
 author: "Andrew L Jackson"
 date: "27 July 2015"
 output: html_document
@@ -7,9 +7,11 @@ output: html_document
 
 ## R revision
 
-`/aj_notes/jackson_podcast scripts_intro_to_R`
+Download my [teaching files](https://github.com/AndrewLJackson/teaching) as a zip. In the folder `/podcasts` you can find some basic example R script files to practice and remind yourself how R works. At home you can follow my [video podcast](http://www.tcd.ie/Zoology/research/research/theoretical/Rpodcasts.php) instructions that go with these, but they are large files and wont load from here, and besides, you have us in person for this course!
+
 
 ### Graphics
+In the folder `/podcasts/graphs/`
 
 - `basic_summary_statistics.r`
 - `histograms_template.r`
@@ -18,6 +20,7 @@ output: html_document
 - `scatter_plots_template.r`
 
 ### Basic linear models
+In the folders `/podcasts/basic-analyses/` and `/podcasts/genearlised-linear-models/`
 - `t_tests_example.r`
 - `linear_regression_template.r`
 - `binary_regression_template.r` 
