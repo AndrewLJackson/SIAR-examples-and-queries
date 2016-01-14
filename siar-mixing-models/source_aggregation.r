@@ -157,6 +157,10 @@ siarmatrixplot(model2)
 CD.posteriori.aggregated <-  cbind(model1$output[,c("A","B")],
                                    rowSums(model1$output[,c("C","D")]))
 
+BCD.posteriori.aggregated <-  cbind(model1$output[,c("A")],
+                                   rowSums(model1$output[,c("B","C","D")]))
+
+
 # this figure illustrates how uncertain we are in the estiamtes, and 
 # it differs starkly with the relatively much more certain results stemming 
 # from the a priori aggregation.
@@ -164,6 +168,7 @@ CD.posteriori.aggregated <-  cbind(model1$output[,c("A","B")],
 siardensityplot(CD.posteriori.aggregated,
                 xticklabels=c('A','B','C+D'),
                 main = "Sources C and D combined a posteriori")
+
 pairs(CD.posteriori.aggregated,
       diag.panel = panelhist,
       lower.panel = panelcor,

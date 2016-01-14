@@ -1,0 +1,15 @@
+---
+title: "January-course-notes"
+author: "Andrew L Jackson"
+date: "12 January 2016"
+output: html_document
+---
+
++ archaeology / movement / diet
++ fatty acids
++ compound specific analysis
++ community structure / trophic ecology
++ enrichment experiments
++ isoscapes
++ 
+

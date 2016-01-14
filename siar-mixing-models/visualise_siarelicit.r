@@ -14,7 +14,7 @@ library(siar)
 # (6,2,2) ; (3,7,5) ; (6,2,6) ; (2,3,4)
 # and (1,1,1) is the default prior of all solutions as likely as the other
 
-alpha <- c(6,2,2)
+alpha <- c(3, 1, 1, 1)
 
 # number of smpales to draw from the corresponding dirichlet
 reps <- 10^3
@@ -111,9 +111,9 @@ contour(f$x,f$y,f$z,add=TRUE,nlevels=nlevels)
 # using different density esimtations
 
 # i prefer this version as it seems less sensitive to sample size
-dev.new()
+#dev.new()
 pairs(prior_p,lower.panel=function(x,y) panel.myplot.2(x,y,nlevels=5),diag.panel=panel.hist,upper.panel=panel.smooth)
 
-dev.new()
+#dev.new()
 pairs(prior_p,lower.panel=function(x,y) panel.myplot(x,y,nlevels=5),diag.panel=panel.hist,upper.panel=panel.smooth)
 

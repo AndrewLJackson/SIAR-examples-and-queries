@@ -15,7 +15,7 @@ library(viridis)
 palette(viridis(4))
 
 # read in the data
-mydata <- read.csv("../siber-scripts/example_layman_data.csv",
+mydata <- read.csv("../siber-scripts/example_layman_data_all.csv",
                    header=T)
 
 # create the siber object
@@ -64,7 +64,7 @@ rm(list = ls()) # clear the memory of objects
 library(SIBER)
 
 # read in the data
-mydata <- read.csv("../siber-scripts/example_layman_data.csv",
+mydata <- read.csv("../siber-scripts/example_layman_data_all.csv",
                    header=T)
 
 # create the siber object
