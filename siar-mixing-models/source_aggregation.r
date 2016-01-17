@@ -46,6 +46,10 @@ consumers <- data.frame(C=0,N=0)
 # of consumers depending on the format of the consumers dataset
 model1 <- siarsolomcmcv4(consumers, sources)
 
+# same model with a Jeffrey's prior
+model1.jeff <- siarsolomcmcv4(consumers, sources,
+                              prior = c(0.25, 0.25, 0.25, 0.25) )
+
 # this line plots the raw isotope data for sources and consumers as a bi-plot.
 # The trophic enrichment factors have been applied to the sources.
 # You will be asked to position a legend on the screen by left clicking.
@@ -83,6 +87,9 @@ siarplotdata(model1,iso=c(1,2))
 siardensityplot(model1$output[, 1:4], xticklabels=c('A','B','C','D'),
                 main = "All 4 sources")
 
+siardensityplot(model1.jeff$output[, 1:4], xticklabels=c('A','B','C','D'),
+                main = "All 4 sources")
+
 # This gets the 95% credible intervals, modes and means of the estimates
 # It returns values for all estimated parameters... ie. the proportion of each
 # source in the diet for each group of consumers.
@@ -105,6 +112,8 @@ siarhdrs(model1)
 # separate the source contributions.
 #dev.new()
 siarmatrixplot(model1)
+
+siarmatrixplot(model1.jeff)
 
 
 
